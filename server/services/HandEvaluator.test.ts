@@ -1,6 +1,6 @@
 import { HandEvaluator } from "./HandEvaluator";
 import { Card } from "@common/Card";
-import { HandRank } from "@common/HandRank";
+import { HandRank } from "@common/types/HandRank";
 
 describe("HandEvaluator", () => {
   test("should return HandRank.ROYAL_FLUSH", () => {

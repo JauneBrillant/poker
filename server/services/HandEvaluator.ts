@@ -1,5 +1,5 @@
 import { Card } from "@common/Card";
-import { HandRank } from "@common/HandRank";
+import { HandRank } from "@common/types/HandRank";
 import { HandEvaluationResponse } from "@common/types/HandEvaluationResponse";
 
 export class HandEvaluator {
