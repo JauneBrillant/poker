@@ -1,0 +1,24 @@
+{
+  "name": "texas-holdem-api",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "nodemon --exec ts-node --require tsconfig-paths/register index.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "nodemon": "^3.1.9",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "tsconfig-paths": "^4.2.0"
+  }
+}
