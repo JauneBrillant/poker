@@ -9,15 +9,20 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~52.0.24",
-    "expo-status-bar": "~2.0.0",
+    "expo": "~52.0.26",
+    "expo-status-bar": "~2.0.1",
     "react": "18.3.1",
-    "react-native": "0.76.5"
+    "react-native": "0.76.6",
+    "react-native-svg-transformer": "^1.5.0",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@babel/plugin-transform-runtime": "^7.25.9",
+    "@babel/runtime": "^7.26.0",
     "@types/react": "~18.3.12",
-    "typescript": "^5.3.3"
+    "babel-plugin-module-resolver": "^5.0.2",
+    "typescript": "^5.7.3"
   },
   "private": true
 }
