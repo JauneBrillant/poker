@@ -27,4 +27,15 @@ export class Deck {
       }
     }
   }
+
+  public shuffle(): void {
+    for (let i = this.cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+    }
+  }
+
+  public deal(count: number): Card[] {
+    return this.cards.splice(0, count);
+  }
 }
