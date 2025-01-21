@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { io, Socket } from "socket.io-client";
 
 import { Card } from "@common/Card";
-import { HandEvaluationResponse } from "@common/types/HandEvaluationResponse";
+import { HandEvaluationResponse } from "@common/HandEvaluationResponse";
 
 export default function App() {
   const [socket, setSocket] = useState<Socket>();
