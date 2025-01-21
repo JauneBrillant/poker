@@ -1,6 +1,6 @@
 import { Card } from "@common/Card";
-import { HandRank } from "@common/types/HandRank";
-import { HandEvaluationResponse } from "@common/types/HandEvaluationResponse";
+import { HandRank } from "@common/HandRank";
+import { HandEvaluationResponse } from "@common/HandEvaluationResponse";
 
 export class HandEvaluator {
   public static evaluate(cards: Card[]): HandEvaluationResponse {
