@@ -10,6 +10,10 @@ export class Player implements PlayerInterface {
     this.name = name;
   }
 
+  public setCards(cards: Card[]): void {
+    this.hand = cards;
+  }
+
   public bet(amount: number): void {
     this.chips -= amount;
   }
