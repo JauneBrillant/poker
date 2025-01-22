@@ -1,4 +1,4 @@
-import { HandEvaluator } from "./HandEvaluator";
+import { HandEvaluator } from "../HandEvaluator";
 import { Card } from "@common/Card";
 import { HandRank } from "@common/HandRank";
 
