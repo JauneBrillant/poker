@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { Card } from "@common/Card";
 import { GameManager } from "../services/GameManager";
 import { HandEvaluator } from "../services/HandEvaluator";
+import { SocketEvents } from "@common/SocketEvents";
 
 export class SocketIOService {
   private io: Server;
@@ -16,24 +17,15 @@ export class SocketIOService {
     this.io.on("connection", (socket: Socket) => {
       console.log("A client connected");
 
-      // クライアントに初期状態を送信
-      socket.emit("initialState", this.gameManager.getGameState());
-
-      // ゲーム開始イベント
-      socket.on("startGame", () => this.handleStartGame());
-
-      // ゲーム状態更新イベント
-      socket.on("gameStateUpdate", () => this.updateClients());
-
-      // 役判定イベント
+      socket.on(SocketEvents.GAME_START, () => this.handleStartGame());
+      socket.on(SocketEvents.GAME_STATE_UPDATE, () => this.updateClients());
       socket.on(
-        "evaluateHand",
+        SocketEvents.EVALUATE_HAND,
         (cards: { suit: string; rank: string }[], callback) => {
           this.handleEvaluateHand(cards, callback);
         }
       );
 
-      // クライアントが切断したときの処理
       socket.on("disconnect", () => {
         console.log("クライアントが切断しました");
       });
@@ -43,7 +35,7 @@ export class SocketIOService {
   private handleStartGame(): void {
     console.log("ゲームを開始します");
     this.gameManager.startGame();
-    this.io.emit("gameStarted", this.gameManager.getGameState());
+    this.io.emit(SocketEvents.GAME_START, this.gameManager.getGameState());
   }
 
   private handleEvaluateHand(
