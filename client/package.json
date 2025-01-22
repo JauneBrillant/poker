@@ -9,12 +9,17 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/native": "^7.0.14",
+    "@react-navigation/stack": "^7.1.1",
     "expo": "~52.0.26",
     "expo-status-bar": "~2.0.1",
     "react": "18.3.1",
     "react-native": "0.76.6",
+    "react-native-safe-area-context": "^5.1.0",
+    "react-native-screens": "^4.5.0",
     "react-native-svg-transformer": "^1.5.0",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "expo-font": "~13.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
