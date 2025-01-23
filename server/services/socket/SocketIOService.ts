@@ -1,8 +1,6 @@
 import { Server, Socket } from "socket.io";
-import { Card } from "@common/Card";
-import { GameManager } from "../services/GameManager";
-import { HandEvaluator } from "../services/HandEvaluator";
-import { SocketEvents } from "@common/SocketEvents";
+import { Card, SocketEvents } from "@common/types";
+import { GameManager, HandEvaluator } from "@services/game";
 
 export class SocketIOService {
   private io: Server;

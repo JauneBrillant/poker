@@ -1,5 +1,4 @@
-import { Card } from "@common/Card";
-import { Player as PlayerInterface } from "@common/Player";
+import { Card, Player as PlayerInterface } from "@common/types";
 
 export class Player implements PlayerInterface {
   public name: string;

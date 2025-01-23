@@ -1,7 +1,5 @@
-import { Round } from "@common/Round";
-import { Player } from "../models/Player";
-import { Deck } from "../models/Deck";
-import { GameState } from "@common/GameState";
+import { GameState, Round } from "@common/types";
+import { Player, Deck } from "@models";
 
 export class GameManager {
   private deck = new Deck();

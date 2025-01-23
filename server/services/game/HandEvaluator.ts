@@ -1,6 +1,4 @@
-import { Card } from "@common/Card";
-import { HandRank } from "@common/HandRank";
-import { HandEvaluationResponse } from "@common/HandEvaluationResponse";
+import { Card, HandRank, HandEvaluationResponse } from "@common/types";
 
 export class HandEvaluator {
   public static evaluate(cards: Card[]): HandEvaluationResponse {

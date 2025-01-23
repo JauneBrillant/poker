@@ -1,6 +1,4 @@
-import { Card } from "./Card";
-import { Player } from "./Player";
-import { Round } from "./Round";
+import { Card, Player, Round } from "@common/types";
 
 export interface GameState {
   players: Player[];

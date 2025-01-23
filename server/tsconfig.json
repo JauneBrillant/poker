@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "@common/*": ["../common/*"]
+      "@common/*": ["../common/*"],
+      "@models": ["./models/"],
+      "@services/*": ["./services/*"]
     }
   }
 }

@@ -4,9 +4,9 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 
-import { SocketIOService } from "./network/SocketIOService";
-import { GameManager } from "./services/GameManager";
-import { Player } from "./models/Player";
+import { Player } from "@models";
+import { SocketIOService } from "@services/socket";
+import { GameManager } from "@services/game";
 
 // Express, Socket.IOの初期化
 const app = express();
