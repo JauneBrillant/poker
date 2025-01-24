@@ -1,12 +1,13 @@
 import { CreateLobbyRequest, CreateLobbyResponse } from "@common/types";
 
 const BASE_URL = "http://localhost:3000";
+const EMU_URL = "http://10.0.2.2:3000";
 
 export const createLobby = async (
   request: CreateLobbyRequest
 ): Promise<CreateLobbyResponse> => {
   try {
-    const response = await fetch(`${BASE_URL}/lobbies`, {
+    const response = await fetch(`${EMU_URL}/api/lobby`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
