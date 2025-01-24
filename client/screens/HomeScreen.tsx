@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button, ActivityIndicator } from "react-native";
+import { View, Text, Button } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { createLobby } from "@services/http";
 import { CreateLobbyRequest } from "@common/types";
