@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createTamagui, TamaguiProvider, View } from "@tamagui/core";
-import { HomeScreen, CreateLobbyScreen } from "@screens";
+import { HomeScreen } from "@screens";
 import { useFonts } from "expo-font";
 import defaultConfig from "@tamagui/config/v3";
 
@@ -22,11 +22,6 @@ export default function App() {
             name="Home"
             component={HomeScreen}
             options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="CreateLobby"
-            component={CreateLobbyScreen}
-            // options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </TamaguiProvider>
