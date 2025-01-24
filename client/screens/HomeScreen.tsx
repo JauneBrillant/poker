@@ -1,19 +1,25 @@
 import React from "react";
 import { View, Text, Button, ActivityIndicator } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { useFonts } from "expo-font";
+import { createLobby } from "@services/http";
+import { CreateLobbyRequest } from "@common/types";
 
 export const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<any, "Home">>();
+  const requestData: CreateLobbyRequest = {
+    hostName: "test",
+  };
+
+  const handleClickCreateLobby = async () => {
+    const robbyId = await createLobby(requestData);
+    console.log(robbyId);
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Texas Holdem</Text>
       <View style={styles.buttonContainer}>
-        <Button
-          title="ロビーを作成"
-          onPress={() => navigation.navigate("CreateLobby")}
-        />
+        <Button title="ロビーを作成" onPress={handleClickCreateLobby} />
       </View>
       <View style={styles.buttonContainer}>
         <Button title="ロビーを探す" onPress={() => {}} />
