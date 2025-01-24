@@ -6,6 +6,7 @@
     "paths": {
       "@common/*": ["../common/*"],
       "@models": ["./models/"],
+      "@routes/*": ["./routes/*"],
       "@services/*": ["./services/*"]
     }
   }

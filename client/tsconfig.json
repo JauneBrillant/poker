@@ -4,7 +4,10 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@common/*": ["../common/*"]
+      "@common/*": ["../common/*"],
+      "@screens": ["./screens"],
+      "@services/*": ["./services/*"],
+      "@error": ["./error"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"]

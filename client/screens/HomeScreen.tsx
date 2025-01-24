@@ -1,25 +1,22 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, ActivityIndicator } from "react-native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { useNavigation } from "@react-navigation/native";
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
-  const [fontsLoaded] = useFonts({
-    x10y12pxDonguriDuel: require("../assets/fonts/x10y12pxDonguriDuel.ttf"),
-  });
-
-  const handleCreateLobby = () => {};
-  const handleFindLobby = () => {};
+export const HomeScreen = () => {
+  const navigation = useNavigation<NavigationProp<any, "Home">>();
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Texas Holdem</Text>
       <View style={styles.buttonContainer}>
-        <Button title="ロビーを作成" onPress={handleCreateLobby} />
+        <Button
+          title="ロビーを作成"
+          onPress={() => navigation.navigate("CreateLobby")}
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="ロビーを探す" onPress={handleFindLobby} />
+        <Button title="ロビーを探す" onPress={() => {}} />
       </View>
     </View>
   );
@@ -41,5 +38,3 @@ const styles = {
     marginBottom: 70,
   },
 };
-
-export default HomeScreen;

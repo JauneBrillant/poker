@@ -8,6 +8,8 @@ import { Player } from "@models";
 import { SocketIOService } from "@services/socket";
 import { GameManager } from "@services/game";
 
+import lobbyRoutes from "@routes/lobbyRoutes";
+
 // Express, Socket.IOの初期化
 const app = express();
 const server = http.createServer(app);
@@ -25,6 +27,10 @@ const gameManager = new GameManager(player);
 // SocketIOServerの初期化
 const socketIOService = new SocketIOService(io, gameManager);
 socketIOService.init();
+
+// ルーティングの設定
+app.use(express.json());
+app.use("/api", lobbyRoutes);
 
 server.listen(3000, () => {
   console.log("サーバーがポート3000で起動しました");

@@ -1,6 +1,5 @@
-import { socketService } from "./SocketService";
-import { GameState } from "@common/GameState";
-import { SocketEvents } from "@common/SocketEvents";
+import { socketService } from "@services/socket";
+import { GameState, SocketEvents } from "@common/types";
 
 export const startGame = () => {
   const socket = socketService.getSocket();
