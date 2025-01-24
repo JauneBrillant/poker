@@ -1,9 +1,7 @@
 import { ApiResponse } from "@common/types";
 
 export interface CreateLobbyRequest {
-  createrId: string;
-  isPrivate: boolean;
-  password?: string;
+  hostName: string;
 }
 
 export interface LobbyData {
