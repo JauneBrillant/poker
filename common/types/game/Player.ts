@@ -6,5 +6,6 @@ export interface Player {
   position: TablePositions;
   hand: Card[];
   chips: number;
+  currentbetAmount: number;
   isActive: boolean;
 }
