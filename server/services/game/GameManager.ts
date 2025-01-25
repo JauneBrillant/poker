@@ -3,10 +3,10 @@ import { Player, Deck } from "@models";
 
 export class GameManager {
   private deck = new Deck();
-  private state: GameState;
+  private gameState: GameState;
 
   constructor(players: Player[]) {
-    this.state = {
+    this.gameState = {
       players,
       communityCards: [],
       round: Round.PRE_FLOP,
@@ -16,7 +16,7 @@ export class GameManager {
   }
 
   public getGameState(): GameState {
-    return this.state;
+    return this.gameState;
   }
 
   public startGame(): void {
@@ -26,20 +26,20 @@ export class GameManager {
   }
 
   private dealCards(): void {
-    for (const player of this.state.players as Player[]) {
+    for (const player of this.gameState.players as Player[]) {
       player.setCards(this.deck.deal(2));
     }
   }
 
   private revealFlop(): void {
-    this.state.communityCards = this.deck.deal(3);
+    this.gameState.communityCards = this.deck.deal(3);
   }
 
   private reveralTurn(): void {
-    this.state.communityCards.push(this.deck.deal(1)[0]);
+    this.gameState.communityCards.push(this.deck.deal(1)[0]);
   }
 
   private revealRiver(): void {
-    this.state.communityCards.push(this.deck.deal(1)[0]);
+    this.gameState.communityCards.push(this.deck.deal(1)[0]);
   }
 }
