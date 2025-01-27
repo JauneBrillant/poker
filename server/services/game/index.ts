@@ -1,2 +1,2 @@
-export * from "./GameManager";
+export * from "./PokerGame";
 export * from "./HandEvaluator";

@@ -6,7 +6,7 @@ import { Server } from "socket.io";
 
 import { Player } from "@models";
 import { SocketIOService } from "@services/socket";
-import { GameManager } from "@services/game";
+import { PokerGame } from "@services/game";
 
 import lobbyRoutes from "@routes/lobbyRoutes";
 
@@ -21,11 +21,10 @@ const io = new Server(server, {
 });
 
 // ゲームの初期化
-const player = [new Player("Alice"), new Player("Bob")];
-const gameManager = new GameManager(player);
+let game: PokerGame | null = null;
 
 // SocketIOServerの初期化
-const socketIOService = new SocketIOService(io, gameManager);
+const socketIOService = new SocketIOService(io, game);
 socketIOService.init();
 
 // ルーティングの設定

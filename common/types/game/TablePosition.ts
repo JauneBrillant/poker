@@ -1,4 +1,4 @@
-export enum TablePositions {
+export enum TablePosition {
   BTN = "button",
   SB = "small-blind",
   BB = "big-blind",

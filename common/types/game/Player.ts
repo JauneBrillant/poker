@@ -1,11 +1,14 @@
-import { Card } from "@common/types";
-import { TablePositions } from "@common/types";
+import { Card } from "./Card";
+import { TablePosition } from "./TablePosition";
+import { PlayerAction } from "./PlayerAction";
 
 export interface Player {
+  id: string;
   name: string;
-  position: TablePositions;
   hand: Card[];
+  position: TablePosition;
   chips: number;
-  currentbetAmount: number;
+  currentBet: number;
   isActive: boolean;
+  availableActions: PlayerAction[];
 }

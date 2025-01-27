@@ -1,16 +1,6 @@
-import { ApiResponse } from "@common/types";
+import { Player } from "../game/Player";
 
-export interface CreateLobbyRequest {
-  hostName: string;
-}
-
-export interface FindLobbyRequest {
+export interface Lobby {
   lobbyId: string;
+  players?: Player[];
 }
-
-export interface LobbyData {
-  lobbyId: string;
-}
-
-export type CreateLobbyResponse = ApiResponse<LobbyData>;
-export type FindLobbyResponse = ApiResponse<boolean>;
