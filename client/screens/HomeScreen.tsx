@@ -2,21 +2,34 @@ import React, { useState } from "react";
 import { DimensionValue } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { createLobby, findLobby } from "@services/http";
-import { CreateLobbyRequest, FindLobbyRequest } from "@common/types";
+import {
+  CreateLobbyRequest,
+  CreateLobbyResponse,
+  FindLobbyRequest,
+} from "@common/types";
 import { View, Text, Button, Input } from "tamagui";
 
 export const HomeScreen = () => {
+  const navigation = useNavigation<NavigationProp<any, "Home">>();
   const [inputValue, setInputValue] = useState<string>("");
   const [existLobby, setExistLobby] = useState<boolean | null>(null);
-  const navigation = useNavigation<NavigationProp<any, "Home">>();
 
   const requestData: CreateLobbyRequest = {
     hostName: "test",
   };
 
   const handleClickCreateLobby = async () => {
-    const lobbyId = await createLobby(requestData);
-    console.log(lobbyId);
+    try {
+      const res: CreateLobbyResponse = await createLobby(requestData);
+      if (res.success) {
+        navigation.navigate("Lobby", { lobbyId: res.data?.lobbyId });
+      } else {
+        // TODO
+        // ポップアップでロビー作成に失敗したことを表示する
+      }
+    } catch (error) {
+      console.log("Failed to create lobby:", error);
+    }
   };
 
   const handleClickFindLobby = async (lobbyId: string) => {
