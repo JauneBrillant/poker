@@ -1,37 +1,51 @@
-import express, { Request, Response, Router } from "express";
-import { nanoid } from "nanoid";
-import { CreateLobbyRequest, CreateLobbyResponse } from "@common/types";
+import type { CreateLobbyRequest, FindLobbyRequest } from "@common/types";
+import { LobbyManager } from "@services/LobbyManager";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
-const router: Router = express.Router();
+const router: Router = Router();
 
 router.post(
-  "/lobby",
-  async (
-    req: Request<CreateLobbyRequest>,
-    res: Response<CreateLobbyResponse>
-  ): Promise<any> => {
-    try {
-      const lobbyId = nanoid();
-      const response: CreateLobbyResponse = {
-        success: true,
-        data: {
-          lobbyId,
-        },
-      };
-      return res.status(201).json(response);
-    } catch (error) {
-      console.error("Error creating lobby:", error);
+	"/create-lobby",
+	(
+		req: Request<unknown, unknown, CreateLobbyRequest>,
+		res: Response<{ message: string }>,
+	): void => {
+		try {
+			const lobby = LobbyManager.getInstance();
+			const { hostname } = req.body;
+			lobby.createLobby(hostname);
+			res.sendStatus(201);
+		} catch (error) {
+			console.error("Error in create-lobby route:", error);
+			res.status(500).json({ message: "Internal server error" });
+		}
+	},
+);
 
-      const errorResponse: CreateLobbyResponse = {
-        success: false,
-        error: {
-          code: 500,
-          message: "Failed to create lobby",
-        },
-      };
-      return res.status(500).json(errorResponse);
-    }
-  }
+router.get(
+	"/check-lobby/:lobbyId",
+	(
+		req: Request<FindLobbyRequest>,
+		res: Response<{ message: string }>,
+	): void => {
+		try {
+			const { lobbyId } = req.params;
+			const decodedLobbyId = decodeURIComponent(lobbyId);
+
+			const lobby = LobbyManager.getInstance();
+			if (!lobby.existLobby(decodedLobbyId)) {
+				res
+					.status(404)
+					.json({ message: `Lobby: ${decodedLobbyId} does not exist` });
+			}
+
+			res.sendStatus(200);
+		} catch (error) {
+			console.error("Error in check-lobby route:", error);
+			res.status(400).json({ message: "Invalid lobby ID format" });
+		}
+	},
 );
 
 export default router;
