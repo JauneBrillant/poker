@@ -34,13 +34,13 @@ router.get(
 			const decodedLobbyId = decodeURIComponent(lobbyId);
 
 			const lobby = LobbyManager.getInstance();
-			if (!lobby.existLobby(decodedLobbyId)) {
+			if (lobby.existLobby(decodedLobbyId)) {
+				res.sendStatus(200);
+			} else {
 				res
 					.status(404)
 					.json({ message: `Lobby: ${decodedLobbyId} does not exist` });
 			}
-
-			res.sendStatus(200);
 		} catch (error) {
 			console.error("Error in check-lobby route:", error);
 			res.status(400).json({ message: "Invalid lobby ID format" });
