@@ -1,4 +1,4 @@
-import { PlayerAction } from "../game/PlayerAction";
+import { PlayerAction } from "../poker/PlayerAction";
 
 export interface ActionEventPayload {
   playerIndex: number;

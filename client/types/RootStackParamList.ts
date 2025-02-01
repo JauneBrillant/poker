@@ -1,6 +1,6 @@
 export type RootStackParamList = {
-  Home: undefined;
-  Username: undefined;
-  Lobby: { lobbyId: string };
-  Game: undefined;
+	Username: undefined;
+	Home: undefined;
+	Lobby: undefined;
+	Game: undefined;
 };

@@ -1,13 +1,13 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "paths": {
-      "@common/*": ["../common/*"],
-      "@models": ["./models/"],
-      "@routes/*": ["./routes/*"],
-      "@services/*": ["./services/*"]
-    }
-  }
+	"compilerOptions": {
+		"baseUrl": ".",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"paths": {
+			"@common/*": ["../common/*"],
+			"@models/*": ["./models/*"],
+			"@routes/*": ["./routes/*"],
+			"@services/*": ["./services/*"]
+		}
+	}
 }

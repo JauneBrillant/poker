@@ -1,26 +1,30 @@
+import { createContext, useContext, useEffect, useState } from "react";
+import { Platform } from "react-native";
 import io from "socket.io-client";
-import { useState, useEffect, useContext, createContext } from "react";
 
 const SocketContext = createContext<SocketIOClient.Socket | null>(null);
 
+const BASE_URL = "http://localhost:3000";
+const ANDROID_EMU_URL = "http://10.0.2.2:3000";
+const SERVER_URL = Platform.OS === "ios" ? BASE_URL : ANDROID_EMU_URL;
+
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+	children,
 }) => {
-  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
+	const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
 
-  useEffect(() => {
-    const serverUrl = "http://10.0.2.2:3000";
-    const socketInstance = io(serverUrl);
-    setSocket(socketInstance);
+	useEffect(() => {
+		const socketInstance = io(SERVER_URL);
+		setSocket(socketInstance);
 
-    return () => {
-      socketInstance.disconnect();
-    };
-  }, []);
+		return () => {
+			socketInstance.disconnect();
+		};
+	}, []);
 
-  return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
-  );
+	return (
+		<SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+	);
 };
 
 export const useSocket = () => useContext(SocketContext);

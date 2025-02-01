@@ -1,57 +1,49 @@
-import { useState, useEffect } from "react";
-import { RouteProp, useRoute } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { SocketEvent } from "@common/types";
+import type { LobbyUpdateEventPayload } from "@common/types";
 import { useSocket } from "contexts/SocketContext";
-import { View, YStack, H2, Text } from "tamagui";
-import { ListItem, Separator, XStack, YGroup } from "tamagui";
-import { getUsername } from "../utils/getUsername";
+import { useEffect, useState } from "react";
+import { H2, ListItem, View, YGroup } from "tamagui";
 
-type RootStackParamList = {
-  Lobby: { lobbyId: string };
-};
+export const LobbyScreen: React.FC = () => {
+	const socket = useSocket();
+	const [hostname, setHostName] = useState<string | null>(null);
+	const [players, setPlayers] = useState<string[]>([]);
 
-// prettier-ignore
-type LobbyScreenNavigationProp = StackNavigationProp<RootStackParamList,"Lobby">;
-type LobbyScreenRouteProp = RouteProp<RootStackParamList, "Lobby">;
+	useEffect(() => {
+		const handleLobbyUpdate = ({
+			lobbyId,
+			updatedPlayers,
+		}: LobbyUpdateEventPayload) => {
+			setHostName(lobbyId);
+			setPlayers(updatedPlayers);
+		};
 
-interface LobbyScreenProps {
-  navigation: LobbyScreenNavigationProp;
-  route: LobbyScreenRouteProp;
-}
+		socket?.on(SocketEvent.LOBBY_UPDATE, handleLobbyUpdate);
 
-type Player = {
-  id: number;
-  name: string | null;
-};
+		return () => {
+			socket?.off(SocketEvent.LOBBY_UPDATE, handleLobbyUpdate);
+		};
+	}, [socket]);
 
-export const LobbyScreen: React.FC<LobbyScreenProps> = () => {
-  const socket = useSocket();
-  const route = useRoute<LobbyScreenRouteProp>();
-  const { lobbyId } = route.params;
-  const [username, SetUsername] = useState<string | null>(null);
-  const [players, setPlayers] = useState<Player[]>([{ id: 1, name: username }]);
+	return (
+		<View flex={1} alignItems="center" marginTop="80">
+			<H2
+				style={{
+					fontFamily: "x10y12pxDonguriDuel",
+					fontSize: 30,
+					color: "rgb(44, 189, 156)",
+				}}
+			>
+				{hostname}のロビー
+			</H2>
 
-  useEffect(() => {
-    const fetcheUsername = async () => {
-      const fetchedUsername = await getUsername();
-      SetUsername(fetchedUsername);
-    };
-
-    fetcheUsername();
-  }, []);
-
-  return (
-    <View flex={1} alignItems="center" marginTop="80">
-      <H2
-        style={{
-          fontFamily: "x10y12pxDonguriDuel",
-          fontSize: 30,
-          color: "rgb(44, 189, 156)",
-        }}
-      >
-        Lobby
-      </H2>
-      <YGroup separator={<Separator />}>{players.map((palyer) => {})}</YGroup>
-    </View>
-  );
+			<YGroup>
+				{players.map((player, index) => (
+					<YGroup.Item key={player}>
+						<ListItem>{player}</ListItem>
+					</YGroup.Item>
+				))}
+			</YGroup>
+		</View>
+	);
 };

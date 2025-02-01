@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { GameState } from "@common/types";
-import { PokerTable } from "components/PokerTable";
-import { ActionButtons } from "components/ActionButtons";
+import type { GameState } from "@common/types";
+import { ActionButtons, PokerTable } from "@components";
+import { useState } from "react";
+import { View } from "react-native";
 
 export const GameScreen: React.FC = () => {
-  const [gameState, setGameState] = useState<GameState>();
+	const [gameState, setGameState] = useState<GameState>();
 
-  return (
-    <>
-      <PokerTable />
-      <ActionButtons />
-    </>
-  );
+	return (
+		<View>
+			<PokerTable />
+			<ActionButtons />
+		</View>
+	);
 };
