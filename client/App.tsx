@@ -41,7 +41,7 @@ export default function App() {
 						<Stack.Screen
 							name="Game"
 							component={GameScreen}
-							options={{ headerShown: false }}
+							// options={{ headerShown: false }}
 						/>
 					</Stack.Navigator>
 				</TamaguiProvider>
