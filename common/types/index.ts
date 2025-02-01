@@ -16,5 +16,7 @@ export * from "./http/FindLobbyRequest";
 
 // socket
 export * from "./socket/SocketEvent";
+export * from "./socket/GameStartEventPayload";
+export * from "./socket/GameStartedEventPayload";
 export * from "./socket/ActionEventPayload";
 export * from "./socket/LobbyUpdateEventPayload";

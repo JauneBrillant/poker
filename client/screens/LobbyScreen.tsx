@@ -1,7 +1,11 @@
 import { SocketEvent } from "@common/types";
 import type { LobbyUpdateEventPayload } from "@common/types";
+import type { GameStartedEventPayload } from "@common/types";
+import { useUsername } from "@hooks/useUsername";
 import { useNavigation } from "@react-navigation/native";
 import type { NavigationProp } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+import type { RouteProp } from "@react-navigation/native";
 import { useSocket } from "contexts/SocketContext";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
@@ -9,34 +13,46 @@ import { Button, H2, ListItem, View, YGroup } from "tamagui";
 import type { RootStackParamList } from "types/RootStackParamList";
 
 export const LobbyScreen: React.FC = () => {
+	const route = useRoute<RouteProp<RootStackParamList, "Lobby">>();
+	const { lobbyId } = route.params;
 	const socket = useSocket();
 	const navigation =
 		useNavigation<NavigationProp<RootStackParamList, "Lobby">>();
-	const [hostname, setHostName] = useState<string | null>(null);
+	const username = useUsername();
 	const [players, setPlayers] = useState<string[]>([]);
 
 	useEffect(() => {
-		const handleLobbyUpdate = ({
-			lobbyId,
-			updatedPlayers,
-		}: LobbyUpdateEventPayload) => {
-			setHostName(lobbyId);
+		const handleLobbyUpdate = ({ updatedPlayers }: LobbyUpdateEventPayload) => {
 			setPlayers(updatedPlayers);
 		};
 
+		socket?.on(
+			SocketEvent.GAME_STARTED,
+			({ gameState }: GameStartedEventPayload) => {
+				navigation.navigate("Game", gameState);
+			},
+		);
 		socket?.on(SocketEvent.LOBBY_UPDATE, handleLobbyUpdate);
 
 		return () => {
 			socket?.off(SocketEvent.LOBBY_UPDATE, handleLobbyUpdate);
+			// socket?.off(SocketEvent.GAME_STARTED);
 		};
-	}, [socket]);
+	}, [socket, navigation]);
 
 	const handleClickGameStart = () => {
 		if (players.length <= 1) {
 			Alert.alert("一人ではゲーム開始できません。");
-		} else {
-			navigation.navigate("Game");
+			return;
 		}
+
+		if (lobbyId !== username) {
+			Alert.alert("ホスト以外ゲームを開始できません。");
+			return;
+		}
+
+		console.log("game_start_event_emit");
+		socket?.emit(SocketEvent.GAME_START, { lobbyId, players });
 	};
 
 	return (
@@ -48,7 +64,7 @@ export const LobbyScreen: React.FC = () => {
 					color: "rgb(44, 189, 156)",
 				}}
 			>
-				{hostname}のロビー
+				{lobbyId}のロビー
 			</H2>
 
 			<YGroup>

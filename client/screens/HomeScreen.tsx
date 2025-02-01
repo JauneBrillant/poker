@@ -24,7 +24,7 @@ export const HomeScreen = () => {
 				throw new Error("Socket connection not available");
 			}
 			joinLobby(socket, username, username);
-			navigation.navigate("Lobby");
+			navigation.navigate("Lobby", { lobbyId: username });
 		} catch (error) {
 			Alert.alert("ロビーの作成に失敗しました。");
 		}
@@ -37,7 +37,7 @@ export const HomeScreen = () => {
 				throw new Error("Socket connection not available");
 			}
 			joinLobby(socket, inputValue, username);
-			navigation.navigate("Lobby");
+			navigation.navigate("Lobby", { lobbyId: inputValue });
 		} catch (error) {
 			Alert.alert("ロビーの検索に失敗しました。");
 		}
