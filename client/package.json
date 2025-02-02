@@ -1,38 +1,42 @@
 {
-  "name": "poker",
-  "version": "1.0.0",
-  "main": "index.ts",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
-  },
-  "dependencies": {
-    "@expo/metro-runtime": "~4.0.1",
-    "@react-navigation/native": "^7.0.14",
-    "@react-navigation/stack": "^7.1.1",
-    "@tamagui/config": "^1.123.0",
-    "@tamagui/lucide-icons": "^1.123.0",
-    "expo": "^52.0.27",
-    "expo-font": "~13.0.3",
-    "expo-status-bar": "~2.0.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-native": "0.76.6",
-    "react-native-svg-transformer": "^1.5.0",
-    "react-native-web": "~0.19.13",
-    "socket.io-client": "^4.8.1",
-    "tamagui": "^1.123.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/plugin-transform-runtime": "^7.25.9",
-    "@babel/runtime": "^7.26.0",
-    "@types/react": "~18.3.12",
-    "@types/socket.io-client": "^1.4.36",
-    "babel-plugin-module-resolver": "^5.0.2",
-    "typescript": "^5.7.3"
-  },
-  "private": true
+	"name": "poker",
+	"version": "1.0.0",
+	"main": "index.ts",
+	"scripts": {
+		"start": "expo start",
+		"android": "expo start --android",
+		"ios": "expo start --ios",
+		"web": "expo start --web",
+		"lint": "biome lint src",
+		"format": "biome format src"
+	},
+	"dependencies": {
+		"@expo/metro-runtime": "~4.0.1",
+		"@react-native-async-storage/async-storage": "^1.23.1",
+		"@react-navigation/native": "^7.0.14",
+		"@react-navigation/stack": "^7.1.1",
+		"@tamagui/config": "^1.123.0",
+		"@tamagui/lucide-icons": "^1.123.0",
+		"expo": "^52.0.27",
+		"expo-font": "~13.0.3",
+		"expo-status-bar": "~2.0.1",
+		"react": "18.3.1",
+		"react-dom": "18.3.1",
+		"react-native": "0.76.6",
+		"react-native-svg-transformer": "^1.5.0",
+		"react-native-web": "~0.19.13",
+		"socket.io-client": "^4.8.1",
+		"tamagui": "^1.123.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.25.2",
+		"@babel/plugin-transform-runtime": "^7.25.9",
+		"@babel/runtime": "^7.26.0",
+		"@biomejs/biome": "1.9.4",
+		"@types/react": "~18.3.12",
+		"@types/socket.io-client": "^1.4.36",
+		"babel-plugin-module-resolver": "^5.0.2",
+		"typescript": "^5.7.3"
+	},
+	"private": true
 }

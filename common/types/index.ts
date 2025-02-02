@@ -1,12 +1,20 @@
-export * from "./game/Card";
-export * from "./game/Player";
-export * from "./game/GameState";
-export * from "./game/Round";
-export * from "./game/HandRank";
+// poker
+export * from "./poker/Card";
+export * from "./poker/Player";
+export * from "./poker/GameState";
+export * from "./poker/Round";
+export * from "./poker/HandRank";
+export * from "./poker/TablePosition";
+export * from "./poker/PlayerAction";
 
-export * from "./http/lobby";
+// lobby
+export * from "./lobby/Lobby";
 
-export * from "./socket/SocketEvents";
-export * from "./socket/HandEvaluationResponse";
+// http
+export * from "./http/CreateLobbyRequest";
+export * from "./http/FindLobbyRequest";
 
-export * from "./ApiResponse";
+// socket
+export * from "./socket/SocketEvent";
+export * from "./socket/ActionEventPayload";
+export * from "./socket/LobbyUpdateEventPayload";
