@@ -1,5 +1,6 @@
 // poker
 export * from "./poker/Card";
+export * from "./poker/Hand";
 export * from "./poker/Player";
 export * from "./poker/GameState";
 export * from "./poker/Round";
