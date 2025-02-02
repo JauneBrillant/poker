@@ -20,9 +20,6 @@ export const HomeScreen = () => {
 	const handleClickCreateLobby = async () => {
 		try {
 			await createLobby(username);
-			if (!socket) {
-				throw new Error("Socket connection not available");
-			}
 			joinLobby(socket, username, username);
 			navigation.navigate("Lobby", { lobbyId: username });
 		} catch (error) {
@@ -33,9 +30,6 @@ export const HomeScreen = () => {
 	const handleClickFindLobby = async () => {
 		try {
 			await findLobby(inputValue);
-			if (!socket) {
-				throw new Error("Socket connection not available");
-			}
 			joinLobby(socket, inputValue, username);
 			navigation.navigate("Lobby", { lobbyId: inputValue });
 		} catch (error) {

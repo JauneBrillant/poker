@@ -28,8 +28,8 @@ export const LobbyScreen: React.FC = () => {
 
 		socket?.on(
 			SocketEvent.GAME_STARTED,
-			({ gameState }: GameStartedEventPayload) => {
-				navigation.navigate("Game", gameState);
+			({ initialGameState }: GameStartedEventPayload) => {
+				navigation.navigate("Game", { lobbyId, initialGameState });
 			},
 		);
 		socket?.on(SocketEvent.LOBBY_UPDATE, handleLobbyUpdate);
@@ -38,7 +38,7 @@ export const LobbyScreen: React.FC = () => {
 			socket?.off(SocketEvent.LOBBY_UPDATE, handleLobbyUpdate);
 			// socket?.off(SocketEvent.GAME_STARTED);
 		};
-	}, [socket, navigation]);
+	}, [socket, navigation, lobbyId]);
 
 	const handleClickGameStart = () => {
 		if (players.length <= 1) {
@@ -51,7 +51,6 @@ export const LobbyScreen: React.FC = () => {
 			return;
 		}
 
-		console.log("game_start_event_emit");
 		socket?.emit(SocketEvent.GAME_START, { lobbyId, players });
 	};
 

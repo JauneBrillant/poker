@@ -4,5 +4,5 @@ export type RootStackParamList = {
 	Username: undefined;
 	Home: undefined;
 	Lobby: { lobbyId: string };
-	Game: GameState;
+	Game: { lobbyId: string; initialGameState: GameState };
 };
