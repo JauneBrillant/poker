@@ -1,14 +1,14 @@
-import { Card } from "./Card";
-import { Player } from "./Player";
-import { Round } from "./Round";
+import type { Card } from "./Card";
+import type { Player } from "./Player";
+import type { Round } from "./Round";
 
 export interface GameState {
-  players: Player[];
-  communityCards: Card[];
-  currentRound: Round;
-  mainPot: number;
-  sidePot: number;
-  currentBet: number;
-  currentPlayerIndex: number;
-  hasBetOccurred: boolean;
+	players: Player[];
+	communityCards: Card[];
+	currentRound: Round;
+	mainPot: number;
+	sidePot: number;
+	currentBet: number;
+	currentPlayerIndex: number;
+	hasBetOccurred: boolean;
 }
