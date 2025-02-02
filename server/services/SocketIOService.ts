@@ -1,7 +1,7 @@
 import type {
 	ActionEventPayload,
+	GameStartEventPayload,
 	Lobby,
-	LobbyUpdateEventPayload,
 } from "@common/types";
 import { SocketEvent } from "@common/types";
 import { LobbyManager } from "@services/LobbyManager";
@@ -28,15 +28,21 @@ export class SocketIOService {
 				const updatedPlayers =
 					LobbyManager.getInstance().getLobby(lobbyId)?.players || [];
 
-				this.io.to(lobbyId).emit(SocketEvent.LOBBY_UPDATE, {
-					lobbyId,
-					updatedPlayers,
-				} as LobbyUpdateEventPayload);
+				this.io.to(lobbyId).emit(SocketEvent.LOBBY_UPDATE, { updatedPlayers });
 			});
 
-			socket.on(SocketEvent.GAME_START, (payload) =>
-				this.handleStartGame(payload),
+			socket.on(
+				SocketEvent.GAME_START,
+				({ lobbyId, players }: GameStartEventPayload) => {
+					console.log("game start event listening");
+					console.log(`lobbyId: ${lobbyId}  players: ${players}`);
+					this.game = new PokerGame(players);
+					this.io
+						.to(lobbyId)
+						.emit(SocketEvent.GAME_STARTED, { gameState: this.game.state });
+				},
 			);
+
 			socket.on(SocketEvent.ACTION, (payload) => {
 				this.handleAction(payload);
 			});
@@ -50,11 +56,7 @@ export class SocketIOService {
 		});
 	}
 
-	private handleStartGame(lobby: Lobby): void {
-		console.log("game started");
-		this.game = new PokerGame(lobby);
-		this.io.emit(SocketEvent.GAME_START, this.game.state);
-	}
+	private handleStartGame(lobby: Lobby): void {}
 
 	private handleAction(payload: ActionEventPayload) {
 		this.game.processAction(payload.playerIndex, payload.action);

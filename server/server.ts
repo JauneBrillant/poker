@@ -28,6 +28,6 @@ socketIOService.init();
 app.use(express.json());
 app.use("/api", lobbyRoutes);
 
-server.listen(3000, () => {
+server.listen(3000, "0.0.0.0", () => {
 	console.log("the server has started on port 3000");
 });

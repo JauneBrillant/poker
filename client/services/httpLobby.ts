@@ -1,7 +1,8 @@
 import type { CreateLobbyRequest } from "@common/types";
 import { Platform } from "react-native";
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://192.168.1.8:3000";
+const LOCAL_URL = "http://localhost:3000";
 const ANDROID_EMU_URL = "http://10.0.2.2:3000";
 const SERVER_URL = Platform.OS === "ios" ? BASE_URL : ANDROID_EMU_URL;
 
@@ -10,7 +11,7 @@ export const createLobby = async (hostname: string): Promise<void> => {
 		hostname,
 	};
 
-	const res = await fetch(`${SERVER_URL}/api/create-lobby`, {
+	const res = await fetch(`${BASE_URL}/api/create-lobby`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",

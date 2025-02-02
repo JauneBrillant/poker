@@ -1,25 +1,34 @@
-import { Button, Group, YStack } from "tamagui";
+import { SocketEvent } from "@common/types";
+import type { GameState, PlayerAction } from "@common/types";
+import { useSocket } from "@contexts/SocketContext";
+import { useUsername } from "@hooks/useUsername";
+import { StyleSheet } from "react-native";
+import { Button, YGroup } from "tamagui";
 
-export const ActionButtons: React.FC = () => {
+interface ActionButtonsProps {
+	lobbyId: string;
+	gameState: GameState;
+}
+
+export const ActionButtons: React.FC<ActionButtonsProps> = ({
+	lobbyId,
+	gameState,
+}) => {
+	const username = useUsername();
+	const player = gameState.players.find((p) => p.name === username);
+	const socket = useSocket();
+
+	const handleActions = (action: PlayerAction) => {
+		socket?.emit(SocketEvent.PLAYER_ACTION, { lobbyId });
+	};
+
 	return (
-		<YStack padding="$3" alignItems="center">
-			<Group orientation="horizontal">
-				<Group.Item>
-					<Button>FOLD</Button>
-				</Group.Item>
-				<Group.Item>
-					<Button>CHECK</Button>
-				</Group.Item>
-				<Group.Item>
-					<Button>CALL</Button>
-				</Group.Item>
-				<Group.Item>
-					<Button>RAIZE</Button>
-				</Group.Item>
-				<Group.Item>
-					<Button>ALL-IN</Button>
-				</Group.Item>
-			</Group>
-		</YStack>
+		<YGroup orientation="horizontal" position="absolute" bottom={10}>
+			{player?.availableActions.map((action) => (
+				<YGroup.Item key={action}>
+					<Button onPress={() => handleActions(action)}>{action}</Button>
+				</YGroup.Item>
+			))}
+		</YGroup>
 	);
 };

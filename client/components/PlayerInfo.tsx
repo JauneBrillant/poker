@@ -1,12 +1,6 @@
+import type { Player } from "@common/types";
 import { StyleSheet } from "react-native";
 import { Card, Text } from "tamagui";
-
-type Player = {
-	id: number;
-	name: string;
-	chips: number;
-	isActive: boolean;
-};
 
 interface PlayerInfoProps {
 	index: number;
@@ -28,8 +22,8 @@ export const PlayerInfo: React.FC<PlayerInfoProps> = ({
 				{ background: player.isActive ? "#6eff90" : "#404040" },
 			]}
 		>
-			<Text style={styles.playerName}>{player.name}</Text>
-			<Text style={styles.playerChips}>{player.chips}</Text>
+			<Text fontFamily={"x10y12pxDonguriDuel"}>{player.name}</Text>
+			<Text fontFamily={"x10y12pxDonguriDuel"}>{player.chips}</Text>
 		</Card>
 	);
 };
@@ -42,13 +36,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 10,
-	},
-	playerName: {
-		fontWeight: "bold",
-		color: "#fff",
-	},
-	playerChips: {
-		color: "#fff",
 	},
 });
 

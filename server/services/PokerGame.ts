@@ -8,8 +8,8 @@ export class PokerGame {
 	private deck = new Deck();
 	public state: GameState;
 
-	constructor(lobby: Lobby) {
-		const players: Player[] = lobby.players.map(
+	constructor(lobbyMembers: string[]) {
+		const players: Player[] = lobbyMembers.map(
 			(playerName) => new Player(playerName),
 		);
 		this.state = {
