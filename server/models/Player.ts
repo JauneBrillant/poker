@@ -1,22 +1,33 @@
 import { PlayerAction } from "@common/types";
-import type {
-	Card,
-	GameState,
-	Player as PlayerInterface,
-	TablePosition,
-} from "@common/types";
+import type { TablePosition } from "@common/types";
+import type { GameState, Hand, Player as PlayerInterface } from "@common/types";
+import { TablePositionArray } from "@common/types";
+import { PokerHandEvaluator } from "@services/PokerHandEvaluator";
+import type { Card } from "./Card";
 
 export class Player implements PlayerInterface {
+	private evaluator = new PokerHandEvaluator();
 	public name: string;
-	public hand: Card[];
+	public hand: Hand;
 	public position: TablePosition;
 	public chips: number;
 	public currentBet: number;
-	public isActive = true;
+	public isActive: boolean;
 	public availableActions: PlayerAction[];
 
-	constructor(name: string) {
+	constructor(
+		index: number,
+		name: string,
+		cards: Card[],
+		communityCards: Card[],
+	) {
 		this.name = name;
+		this.hand = this.evaluator.evaluate(cards, communityCards);
+		this.position = TablePositionArray[index];
+		this.chips = 1000;
+		this.currentBet = 0;
+		this.isActive = true;
+		this.availableActions = [];
 	}
 
 	public bet(amount: number): void {
@@ -28,16 +39,16 @@ export class Player implements PlayerInterface {
 		this.chips += amount;
 	}
 
-	public getAvailableActions = (gameState: GameState) => {
+	public setAvailableActions(gameState: GameState): void {
 		const actions = [PlayerAction.FOLD];
 
 		// fold済み
 		if (!this.isActive) {
-			return [];
+			this.availableActions = [];
 		}
 
 		if (this.chips <= 0) {
-			return [PlayerAction.ALL_IN];
+			this.availableActions = [PlayerAction.ALL_IN];
 		}
 
 		if (!gameState.hasBetOccurred) {
@@ -53,6 +64,7 @@ export class Player implements PlayerInterface {
 			actions.push(PlayerAction.RAISE);
 		}
 
-		return actions;
-	};
+		this.availableActions = [];
+		this.availableActions = [...actions];
+	}
 }

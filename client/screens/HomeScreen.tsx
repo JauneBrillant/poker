@@ -4,11 +4,20 @@ import { useNavigation } from "@react-navigation/native";
 import type { NavigationProp } from "@react-navigation/native";
 import { createLobby, findLobby } from "@services/httpLobby";
 import { joinLobby } from "@services/socketLobby";
+import { Search } from "@tamagui/lucide-icons";
 import { useState } from "react";
 import { Alert } from "react-native";
-import type { DimensionValue } from "react-native";
-import { Button, Input, Text, View } from "tamagui";
+import {
+	Button,
+	Input,
+	SizableText,
+	Text,
+	View,
+	XStack,
+	YStack,
+} from "tamagui";
 import type { RootStackParamList } from "types/RootStackParamList";
+import { Color } from "../theme/Color";
 
 export const HomeScreen = () => {
 	const socket = useSocket();
@@ -38,57 +47,53 @@ export const HomeScreen = () => {
 	};
 
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Texas Holdem</Text>
+		<View
+			flex={1}
+			justifyContent="center"
+			alignItems="center"
+			backgroundColor={Color.offWhite}
+			padding={10}
+		>
+			<Text
+				color={Color.green}
+				textAlign="center"
+				fontFamily={"x10y12pxDonguriDuel"}
+				fontSize={70}
+			>
+				Texas Holdem
+			</Text>
 
-			<View style={styles.buttonContainer}>
-				<Button onPress={handleClickCreateLobby}>ロビーを作成</Button>
-			</View>
-
-			<View style={styles.buttonContainer}>
-				<Text style={styles.text}>ロビーを探す</Text>
-				<Input
-					style={styles.textInput}
-					placeholder={"lobby ID Here"}
-					placeholderTextColor="rgb(150, 150, 150)"
-					value={inputValue}
-					onChangeText={(text) => setInputValue(text)}
-				/>
-				<Button onPress={handleClickFindLobby}>ロビーを探す</Button>
-			</View>
+			<YStack
+				alignSelf="center"
+				width={240}
+				padding="$2"
+				gap="9"
+				marginTop={20}
+			>
+				<Button
+					backgroundColor={Color.offGreen}
+					onPress={handleClickCreateLobby}
+				>
+					<Text fontSize={16} fontFamily={"x10y12pxDonguriDuel"}>
+						クリエイトロビー
+					</Text>
+				</Button>
+				<XStack gap="$2">
+					<Input
+						flex={1}
+						fontSize={15}
+						placeholder={"ファインドロビー"}
+						backgroundColor={Color.pink}
+						style={{ fontFamily: "x10y12pxDonguriDuel" }}
+						onChangeText={(text) => setInputValue(text)}
+					/>
+					<Button
+						icon={Search}
+						backgroundColor={Color.green}
+						onPress={handleClickFindLobby}
+					/>
+				</XStack>
+			</YStack>
 		</View>
 	);
-};
-
-const styles = {
-	container: {
-		flex: 1,
-		backgroundColor: "rgb(240, 238, 181)",
-		padding: 20,
-	},
-	title: {
-		fontFamily: "x10y12pxDonguriDuel",
-		fontSize: 70,
-		color: "rgb(44, 189, 156)",
-		textAlign: "center" as const,
-		marginTop: 170,
-		marginBottom: 70,
-	},
-	buttonContainer: {},
-	textInput: {
-		width: "100%" as DimensionValue,
-		height: 40,
-		paddingHorizontal: 10,
-		borderWidth: 1,
-		borderColor: "rgb(161, 161, 161)",
-		borderRadius: 4,
-		backgroundColor: "rgb(255, 255, 255)",
-		textAlign: "center" as const,
-	},
-	text: {
-		color: "rgb(0, 0, 0)",
-		fontWeight: "bold" as const,
-		textAlign: "left" as const,
-		marginTop: 20,
-	},
 };

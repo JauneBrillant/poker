@@ -5,5 +5,5 @@ export interface Hand {
 	cards: Card[];
 	rank: HandRank;
 	strRank: string;
-	highCard: number[];
+	kickers: number[];
 }

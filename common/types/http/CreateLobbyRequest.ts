@@ -1,3 +1,3 @@
 export interface CreateLobbyRequest {
-  hostname: string;
+	hostname: string;
 }
