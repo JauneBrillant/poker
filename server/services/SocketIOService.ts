@@ -9,12 +9,11 @@ import { PokerGame } from "@services/PokerGame";
 import type { Server, Socket } from "socket.io";
 
 export class SocketIOService {
+	private games = new Map<string, PokerGame>();
 	private io: Server;
-	private game: PokerGame;
 
-	constructor(server: Server, game: PokerGame) {
+	constructor(server: Server) {
 		this.io = server;
-		this.game = game;
 	}
 
 	public init(): void {
@@ -34,35 +33,27 @@ export class SocketIOService {
 			socket.on(
 				SocketEvent.GAME_START,
 				({ lobbyId, players }: GameStartEventPayload) => {
-					console.log("game start event listening");
-					console.log(`lobbyId: ${lobbyId}  players: ${players}`);
-					this.game = new PokerGame(players);
-					this.io
-						.to(lobbyId)
-						.emit(SocketEvent.GAME_STARTED, { gameState: this.game.state });
+					const newGame = new PokerGame(players);
+					this.games.set(lobbyId, newGame);
+					this.io.to(lobbyId).emit(SocketEvent.GAME_STARTED, {
+						initialGameState: newGame.state,
+					});
 				},
 			);
 
-			socket.on(SocketEvent.ACTION, (payload) => {
-				this.handleAction(payload);
-			});
-			socket.on(SocketEvent.GAME_STATE_UPDATE, () =>
-				this.handleUpdateClients(),
+			socket.on(
+				SocketEvent.PLAYER_ACTION,
+				({ lobbyId, action, betAmount, raiseAmount }) => {
+					console.log(lobbyId, action, betAmount, raiseAmount);
+					const game = this.games.get(lobbyId);
+					game.processAction(action, betAmount, raiseAmount);
+					this.io.to(lobbyId).emit(SocketEvent.GAME_STATE_UPDATE, game.state);
+				},
 			);
 
 			socket.on("disconnect", () => {
 				console.log("user disconnected");
 			});
 		});
-	}
-
-	private handleStartGame(lobby: Lobby): void {}
-
-	private handleAction(payload: ActionEventPayload) {
-		this.game.processAction(payload.playerIndex, payload.action);
-	}
-
-	private handleUpdateClients(): void {
-		this.io.emit("gameStateUpdated", this.game.state);
 	}
 }

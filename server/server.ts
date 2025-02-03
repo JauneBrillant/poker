@@ -1,7 +1,7 @@
 import "tsconfig-paths/register";
 import http from "node:http";
-import type { PokerGame } from "@services/PokerGame";
 import { SocketIOService } from "@services/SocketIOService";
+import cors from "cors";
 import express from "express";
 import { Server } from "socket.io";
 
@@ -17,11 +17,10 @@ const io = new Server(server, {
 	},
 });
 
-// ゲームの初期化
-const game: PokerGame | null = null;
+app.use(cors());
 
 // SocketIOServerの初期化
-const socketIOService = new SocketIOService(io, game);
+const socketIOService = new SocketIOService(io);
 socketIOService.init();
 
 // ルーティングの設定

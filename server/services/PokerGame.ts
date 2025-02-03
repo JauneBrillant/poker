@@ -9,12 +9,15 @@ export class PokerGame {
 	public state: GameState;
 
 	constructor(lobbyMembers: string[]) {
+		const communityCards = this.deck.deal(3);
 		const players: Player[] = lobbyMembers.map(
-			(playerName) => new Player(playerName),
+			(playerName, index) =>
+				new Player(index, playerName, this.deck.deal(2), communityCards),
 		);
+
 		this.state = {
-			players: players,
-			communityCards: [],
+			players,
+			communityCards,
 			currentRound: Round.PRE_FLOP,
 			mainPot: 0,
 			sidePot: 0,
@@ -23,53 +26,14 @@ export class PokerGame {
 			hasBetOccurred: false,
 		};
 
-		this.deck.shuffle();
-		this.dealCards();
-		this.revealFlop();
+		this.updatePlayersAvailableActions();
 	}
 
-	public nextRound(): void {
-		this.state = {
-			...this.state,
-			currentRound: this.state.currentRound + 1,
-			mainPot: 0,
-			sidePot: 0,
-			hasBetOccurred: false,
-		};
-
-		for (const player of this.state.players) {
-			player.currentBet = 0;
-		}
-	}
-
-	private dealCards(): void {
-		for (const player of this.state.players) {
-			player.hand = this.deck.deal(2);
-		}
-	}
-
-	private revealFlop(): void {
-		this.state.communityCards = this.deck.deal(3);
-	}
-
-	private reveralTurn(): void {
-		this.state.communityCards.push(this.deck.deal(1)[0]);
-	}
-
-	private revealRiver(): void {
-		this.state.communityCards.push(this.deck.deal(1)[0]);
-	}
-
-	private canProceedToNextRound(): boolean {
-		const activePlayers = this.state.players.filter(
-			(player) => player.isActive,
-		);
-		const betAmount = activePlayers[0].currentBet;
-		return activePlayers.every((player) => player.currentBet === betAmount);
-	}
-
-	public processAction(playerIndex: number, action: PlayerAction): void {
-		this.state.currentPlayerIndex = playerIndex;
+	public processAction(
+		action: PlayerAction,
+		betAmount?: number,
+		raiseAmount?: number,
+	): void {
 		const currentPlayer = this.state.players[
 			this.state.currentPlayerIndex
 		] as Player;
@@ -89,7 +53,6 @@ export class PokerGame {
 			}
 
 			case PlayerAction.BET: {
-				const betAmount = 100; // UIから受け取る想定
 				currentPlayer.bet(betAmount);
 				this.state.currentBet = betAmount;
 				this.state.hasBetOccurred = true;
@@ -97,8 +60,7 @@ export class PokerGame {
 			}
 
 			case PlayerAction.RAISE: {
-				const raiseAmount = 100; // UIから受け取る想定
-				currentPlayer.bet(100);
+				currentPlayer.bet(raiseAmount);
 				this.state.currentBet += raiseAmount;
 				break;
 			}
@@ -109,6 +71,46 @@ export class PokerGame {
 		}
 
 		this.nextPlayer();
+	}
+
+	private updatePlayersAvailableActions(): void {
+		for (const player of this.state.players) {
+			(player as Player).setAvailableActions(this.state);
+		}
+	}
+
+	private updatePlayersHandRank(): void {
+		//
+	}
+
+	public nextRound(): void {
+		this.state = {
+			...this.state,
+			currentRound: this.state.currentRound + 1,
+			mainPot: 0,
+			sidePot: 0,
+			hasBetOccurred: false,
+		};
+
+		for (const player of this.state.players) {
+			player.currentBet = 0;
+		}
+	}
+
+	private reveralTurn(): void {
+		this.state.communityCards.push(this.deck.deal(1)[0]);
+	}
+
+	private revealRiver(): void {
+		this.state.communityCards.push(this.deck.deal(1)[0]);
+	}
+
+	private canProceedToNextRound(): boolean {
+		const activePlayers = this.state.players.filter(
+			(player) => player.isActive,
+		);
+		const betAmount = activePlayers[0].currentBet;
+		return activePlayers.every((player) => player.currentBet === betAmount);
 	}
 
 	private nextPlayer(): void {

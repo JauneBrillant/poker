@@ -18,11 +18,13 @@ export const PlayerInfo: React.FC<PlayerInfoProps> = ({
 		<Card
 			style={[
 				styles.playerCard,
+				{ backgroundColor: player.isActive ? "#4CAF50" : "#D3D3D3" },
 				{ left: position.x, top: position.y },
-				{ background: player.isActive ? "#6eff90" : "#404040" },
 			]}
 		>
-			<Text fontFamily={"x10y12pxDonguriDuel"}>{player.name}</Text>
+			<Text fontFamily={"x10y12pxDonguriDuel"}>
+				{player.name}({player.position})
+			</Text>
 			<Text fontFamily={"x10y12pxDonguriDuel"}>{player.chips}</Text>
 		</Card>
 	);

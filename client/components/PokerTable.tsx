@@ -1,5 +1,4 @@
 import type { GameState } from "@common/types";
-import { Player } from "@common/types";
 import { PlayerInfo } from "@components";
 import type React from "react";
 import { StyleSheet } from "react-native";

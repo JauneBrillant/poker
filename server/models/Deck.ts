@@ -26,9 +26,11 @@ export class Deck {
 				this.cards.push(new Card(suit, rank));
 			}
 		}
+
+		this.shuffle();
 	}
 
-	public shuffle(): void {
+	private shuffle(): void {
 		for (let i = this.cards.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
 			[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
