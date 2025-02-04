@@ -5,9 +5,10 @@ import type { NavigationProp } from "@react-navigation/native";
 import { createLobby, findLobby } from "@services/httpLobby";
 import { joinLobby } from "@services/socketLobby";
 import { Search } from "@tamagui/lucide-icons";
+import { Settings } from "@tamagui/lucide-icons";
 import { useState } from "react";
 import { Alert } from "react-native";
-import { Button, Input, Text, View, XStack, YStack } from "tamagui";
+import { Button, H1, Input, Text, XStack, YStack } from "tamagui";
 import type { RootStackParamList } from "types/RootStackParamList";
 import { Color } from "../theme/Color";
 
@@ -39,18 +40,28 @@ export const HomeScreen = () => {
 	};
 
 	return (
-		<View
+		<YStack
 			flex={1}
-			justifyContent="center"
 			alignItems="center"
 			backgroundColor={Color.offWhite}
 			padding={10}
 		>
+			<Button
+				unstyled
+				icon={Settings}
+				size={70}
+				top="$11"
+				style={{ marginLeft: "auto" }}
+				// onPress={handleClickSettingsBtn}
+			/>
+
 			<Text
 				color={Color.green}
 				textAlign="center"
 				fontFamily={"x10y12pxDonguriDuel"}
 				fontSize={70}
+				marginTop="$20"
+				padding="$2"
 			>
 				Texas Holdem
 			</Text>
@@ -86,6 +97,6 @@ export const HomeScreen = () => {
 					/>
 				</XStack>
 			</YStack>
-		</View>
+		</YStack>
 	);
 };
