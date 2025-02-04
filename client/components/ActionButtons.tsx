@@ -4,7 +4,7 @@ import type { ActionEventPayload } from "@common/types";
 import { useSocket } from "@contexts/SocketContext";
 import { useUsername } from "@hooks/useUsername";
 import { useState } from "react";
-import { Button, YGroup } from "tamagui";
+import { Button, Text, XGroup } from "tamagui";
 
 interface ActionButtonsProps {
 	lobbyId: string;
@@ -32,17 +32,16 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
 	};
 
 	return (
-		<YGroup orientation="horizontal" position="absolute" bottom={10}>
+		<XGroup bottom={20}>
 			{player?.availableActions.map((action) => (
-				<YGroup.Item key={action}>
-					<Button
-						fontFamily={"x10y12pxDonguriDuel"}
-						onPress={() => handleActions(action)}
-					>
-						{action}
+				<XGroup.Item key={action}>
+					<Button onPress={() => handleActions(action)}>
+						<Text fontSize={20} fontFamily={"x10y12pxDonguriDuel"}>
+							{action}
+						</Text>
 					</Button>
-				</YGroup.Item>
+				</XGroup.Item>
 			))}
-		</YGroup>
+		</XGroup>
 	);
 };

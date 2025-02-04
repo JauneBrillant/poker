@@ -27,7 +27,11 @@ export class Player implements PlayerInterface {
 		this.chips = 1000;
 		this.currentBet = 0;
 		this.isActive = true;
-		this.availableActions = [];
+		this.availableActions = [
+			PlayerAction.FOLD,
+			PlayerAction.CHECK,
+			PlayerAction.BET,
+		];
 	}
 
 	public bet(amount: number): void {

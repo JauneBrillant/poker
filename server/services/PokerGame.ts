@@ -1,6 +1,6 @@
 import { PlayerAction, Round } from "@common/types";
-import type { GameState, Lobby } from "@common/types";
-import type { Card } from "@models/Card";
+import type { GameState } from "@common/types";
+import { getNextRound } from "@common/types";
 import { Deck } from "@models/Deck";
 import { Player } from "@models/Player";
 
@@ -25,8 +25,6 @@ export class PokerGame {
 			currentPlayerIndex: 0,
 			hasBetOccurred: false,
 		};
-
-		this.updatePlayersAvailableActions();
 	}
 
 	public processAction(
@@ -70,7 +68,13 @@ export class PokerGame {
 				break;
 		}
 
-		this.nextPlayer();
+		this.updatePlayersAvailableActions();
+
+		if (this.canProceedToNextRound()) {
+			this.nextRound();
+		} else {
+			this.nextPlayer();
+		}
 	}
 
 	private updatePlayersAvailableActions(): void {
@@ -86,7 +90,7 @@ export class PokerGame {
 	public nextRound(): void {
 		this.state = {
 			...this.state,
-			currentRound: this.state.currentRound + 1,
+			currentRound: getNextRound(this.state.currentRound),
 			mainPot: 0,
 			sidePot: 0,
 			hasBetOccurred: false,

@@ -7,15 +7,7 @@ import { joinLobby } from "@services/socketLobby";
 import { Search } from "@tamagui/lucide-icons";
 import { useState } from "react";
 import { Alert } from "react-native";
-import {
-	Button,
-	Input,
-	SizableText,
-	Text,
-	View,
-	XStack,
-	YStack,
-} from "tamagui";
+import { Button, Input, Text, View, XStack, YStack } from "tamagui";
 import type { RootStackParamList } from "types/RootStackParamList";
 import { Color } from "../theme/Color";
 

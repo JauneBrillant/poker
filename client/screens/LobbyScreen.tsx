@@ -9,8 +9,9 @@ import type { RouteProp } from "@react-navigation/native";
 import { useSocket } from "contexts/SocketContext";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { Button, H2, ListItem, View, YGroup } from "tamagui";
+import { Button, H2, ListItem, View, YGroup, YStack } from "tamagui";
 import type { RootStackParamList } from "types/RootStackParamList";
+import { Color } from "../theme/Color";
 
 export const LobbyScreen: React.FC = () => {
 	const route = useRoute<RouteProp<RootStackParamList, "Lobby">>();
@@ -55,18 +56,20 @@ export const LobbyScreen: React.FC = () => {
 	};
 
 	return (
-		<View flex={1} alignItems="center" marginTop="80">
+		<YStack flex={1} backgroundColor={Color.offWhite} alignItems="center">
 			<H2
+				fontSize="$9"
+				color={Color.green}
+				marginTop={10}
+				marginBottom={10}
 				style={{
 					fontFamily: "x10y12pxDonguriDuel",
-					fontSize: 30,
-					color: "rgb(44, 189, 156)",
 				}}
 			>
 				{lobbyId}のロビー
 			</H2>
 
-			<YGroup>
+			<YGroup marginTop="$10">
 				{players.map((player, index) => (
 					<YGroup.Item key={player}>
 						<ListItem>{player}</ListItem>
@@ -75,6 +78,6 @@ export const LobbyScreen: React.FC = () => {
 			</YGroup>
 
 			<Button onPress={handleClickGameStart}>ゲームを開始</Button>
-		</View>
+		</YStack>
 	);
 };

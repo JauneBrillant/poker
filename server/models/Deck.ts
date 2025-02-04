@@ -4,7 +4,7 @@ export class Deck {
 	private cards: Card[] = [];
 
 	constructor() {
-		const suits = ["hearts", "diamonds", "clubs", "spades"];
+		const suits = ["heart", "diamond", "club", "spade"];
 		const ranks = [
 			"2",
 			"3",
