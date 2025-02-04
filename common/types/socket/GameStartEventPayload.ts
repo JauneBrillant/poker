@@ -1,4 +1,4 @@
 export interface GameStartEventPayload {
-	lobbyId: string;
-	players: string[];
+  lobbyId: string;
+  players: string[];
 }

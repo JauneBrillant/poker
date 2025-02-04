@@ -1,3 +1,3 @@
 export interface FindLobbyRequest {
-	lobbyId: string;
+  lobbyId: string;
 }

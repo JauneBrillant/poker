@@ -3,12 +3,12 @@ import type { Player } from "./Player";
 import type { Round } from "./Round";
 
 export interface GameState {
-	players: Player[];
-	communityCards: Card[];
-	currentRound: Round;
-	mainPot: number;
-	sidePot: number;
-	currentBet: number;
-	currentPlayerIndex: number;
-	hasBetOccurred: boolean;
+  players: Player[];
+  communityCards: Card[];
+  currentRound: Round;
+  mainPot: number;
+  sidePot: number;
+  currentBet: number;
+  currentPlayerIndex: number;
+  hasBetOccurred: boolean;
 }

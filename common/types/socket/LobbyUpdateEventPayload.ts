@@ -1,3 +1,3 @@
 export interface LobbyUpdateEventPayload {
-	updatedPlayers: string[];
+  updatedPlayers: string[];
 }
