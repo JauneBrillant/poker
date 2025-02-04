@@ -3,13 +3,24 @@ import type { LobbyUpdateEventPayload } from "@common/types";
 import type { GameStartedEventPayload } from "@common/types";
 import { useUsername } from "@hooks/useUsername";
 import { useNavigation } from "@react-navigation/native";
-import type { NavigationProp } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 import type { RouteProp } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
+import { AlignJustify, SquareChevronLeft } from "@tamagui/lucide-icons";
+import { Crown, Dot, SquarePlay } from "@tamagui/lucide-icons";
 import { useSocket } from "contexts/SocketContext";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { Button, H2, ListItem, View, YGroup, YStack } from "tamagui";
+import {
+	Button,
+	H2,
+	ListItem,
+	Text,
+	View,
+	XStack,
+	YGroup,
+	YStack,
+} from "tamagui";
 import type { RootStackParamList } from "types/RootStackParamList";
 import { Color } from "../theme/Color";
 
@@ -18,7 +29,7 @@ export const LobbyScreen: React.FC = () => {
 	const { lobbyId } = route.params;
 	const socket = useSocket();
 	const navigation =
-		useNavigation<NavigationProp<RootStackParamList, "Lobby">>();
+		useNavigation<StackNavigationProp<RootStackParamList, "Lobby">>();
 	const username = useUsername();
 	const [players, setPlayers] = useState<string[]>([]);
 
@@ -55,29 +66,82 @@ export const LobbyScreen: React.FC = () => {
 		socket?.emit(SocketEvent.GAME_START, { lobbyId, players });
 	};
 
+	const handleClickArrowBtn = () => {
+		if (__DEV__) {
+			navigation.pop();
+			return;
+		}
+
+		Alert.alert("確認", "ロビーから抜けますか？", [
+			{ text: "キャンセル", style: "cancel" },
+			{ text: "OK", onPress: () => navigation.pop() },
+		]);
+	};
+
 	return (
-		<YStack flex={1} backgroundColor={Color.offWhite} alignItems="center">
+		<YStack flex={1} alignItems="center" backgroundColor={Color.offWhite}>
+			<XStack width="90%" justifyContent="space-between">
+				<Button
+					unstyled
+					icon={SquareChevronLeft}
+					size={70}
+					top="$11"
+					onPress={handleClickArrowBtn}
+				/>
+				<Button
+					unstyled
+					icon={AlignJustify}
+					size={70}
+					top="$11"
+					// onPress={handleClickSettingsBtn}
+				/>
+			</XStack>
+
 			<H2
-				fontSize="$9"
-				color={Color.green}
-				marginTop={10}
+				fontSize={30}
+				marginTop="$13"
 				marginBottom={10}
-				style={{
-					fontFamily: "x10y12pxDonguriDuel",
-				}}
+				style={{ fontFamily: "Proxima Nova Lt Semibold" }}
 			>
-				{lobbyId}のロビー
+				{lobbyId}'s Lobby
 			</H2>
 
-			<YGroup marginTop="$10">
-				{players.map((player, index) => (
-					<YGroup.Item key={player}>
-						<ListItem>{player}</ListItem>
-					</YGroup.Item>
-				))}
-			</YGroup>
+			<View width="70%" marginTop="$10">
+				<YGroup gap={10}>
+					{players.map((player, index) => (
+						<YGroup.Item key={player}>
+							<ListItem
+								gap="$10"
+								borderRadius={10}
+								backgroundColor={Color.offGreen}
+							>
+								<XStack>
+									<Button.Icon>
+										{player === lobbyId ? (
+											<Crown marginRight={10} />
+										) : (
+											<Dot marginRight={10} />
+										)}
+									</Button.Icon>
+									<Text fontFamily={"Proxima Nova Lt Semibold"}>{player}</Text>
+								</XStack>
+							</ListItem>
+						</YGroup.Item>
+					))}
+				</YGroup>
 
-			<Button onPress={handleClickGameStart}>ゲームを開始</Button>
+				<Button
+					iconAfter={<SquarePlay size="50" />}
+					backgroundColor={Color.pink}
+					marginLeft="auto"
+					bottom={-300}
+					onPress={handleClickGameStart}
+				>
+					<Text fontSize="$4" fontFamily={"Proxima Nova Lt Semibold"}>
+						START
+					</Text>
+				</Button>
+			</View>
 		</YStack>
 	);
 };
