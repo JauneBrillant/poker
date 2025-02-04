@@ -14,7 +14,7 @@ export const GameHeader: React.FC<GameHeaderProp> = ({ gameState }) => {
 	const navigation =
 		useNavigation<NavigationProp<RootStackParamList, "Game">>();
 
-	const handleClickBtn = () => {
+	const handleClickArrowBtn = () => {
 		Alert.alert("確認", "ゲームから抜けますか？", [
 			{ text: "キャンセル", style: "cancel" },
 			{ text: "OK", onPress: () => navigation.navigate("Home") },
@@ -33,7 +33,7 @@ export const GameHeader: React.FC<GameHeaderProp> = ({ gameState }) => {
 				icon={SquareChevronLeft}
 				size={70}
 				justifyContent="center"
-				onPress={handleClickBtn}
+				onPress={handleClickArrowBtn}
 			/>
 			<YStack>
 				<Text>ラウンド : {gameState.currentRound}</Text>
