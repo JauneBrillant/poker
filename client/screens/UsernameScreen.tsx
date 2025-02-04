@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import type { NavigationProp } from "@react-navigation/native";
+import { Bird, Search } from "@tamagui/lucide-icons";
 import { useState } from "react";
-import { Button, H5, Input, View } from "tamagui";
+import { Button, H5, Input, Text, View, XStack, YStack } from "tamagui";
+import { Color } from "theme/Color";
 import type { RootStackParamList } from "types/RootStackParamList";
 
 export const UsernameScreen = () => {
@@ -24,51 +26,53 @@ export const UsernameScreen = () => {
 	};
 
 	return (
-		<View flex={1} justifyContent="center" alignItems="center" padding={20}>
-			<H5 marginBottom={20}>ユーザ登録</H5>
-
-			<View
-				style={{
-					width: "100%",
-					maxWidth: 400,
-					justifyContent: "center",
-					alignItems: "center",
-					padding: 20,
-					backgroundColor: "#fff",
-					borderRadius: 10,
-					shadowColor: "#000",
-					shadowOffset: { width: 0, height: 2 },
-					shadowOpacity: 0.1,
-					shadowRadius: 5,
-					elevation: 3,
-				}}
+		<YStack flex={1} alignItems="center" backgroundColor={Color.offWhite}>
+			<Text
+				color={Color.green}
+				textAlign="center"
+				fontFamily={"x10y12pxDonguriDuel"}
+				fontSize={70}
+				marginTop="$20"
+				padding="$2"
 			>
-				<Input
-					value={username || ""}
-					onChangeText={(text) => setUsername(text)}
-					width="100%"
-					placeholder="Enter username"
-					style={{
-						marginBottom: 15,
-						paddingLeft: 10,
-						borderWidth: 1,
-						borderColor: "#ddd",
-						borderRadius: 8,
-						fontSize: 16,
-					}}
-				/>
-				<Button
-					onPress={handleSaveUsername}
-					width="100%"
-					backgroundColor="#007BFF"
-					color="#fff"
-					fontWeight="bold"
-					height={48}
-					borderRadius={8}
+				Texas Holdem
+			</Text>
+
+			<YStack width="70%" marginTop={100}>
+				<XStack gap="$2">
+					<Input
+						flex={1}
+						fontSize={15}
+						placeholder={"Username"}
+						backgroundColor={Color.offGreen}
+						borderColor={Color.grey}
+						style={{ fontFamily: "Proxima Nova Lt Semibold" }}
+						onChangeText={(text) => setUsername(text)}
+					/>
+					<Button
+						icon={Bird}
+						backgroundColor={Color.green}
+						onPress={handleSaveUsername}
+					/>
+				</XStack>
+				<Text
+					alignSelf="center"
+					marginTop="$3"
+					fontFamily="Proxima Nova Lt Semibold"
 				>
-					保存
+					or
+				</Text>
+				<Button
+					alignSelf="center"
+					justifyContent="center"
+					width="50%"
+					marginTop="$3"
+					backgroundColor={Color.pink}
+					borderColor={Color.grey}
+				>
+					<Text fontFamily="Proxima Nova Lt Semibold">Play as a Guest</Text>
 				</Button>
-			</View>
-		</View>
+			</YStack>
+		</YStack>
 	);
 };
