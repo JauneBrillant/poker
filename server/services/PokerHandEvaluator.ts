@@ -15,7 +15,17 @@ import { HandRank } from "@common/types";
 import type { Card } from "@models/Card";
 
 export class PokerHandEvaluator {
-  public evaluate(hand: Card[], community: Card[]): Hand {
+  public evaluate(hand: Card[], isPreFlop: boolean, community?: Card[]): Hand {
+    if (isPreFlop) {
+      const ranks = new Set(hand.map((card) => card.rank));
+      return {
+        cards: hand,
+        rank: ranks.size === 1 ? HandRank.ONE_PAIR : HandRank.HIGH_CARD,
+        strRank: ranks.size === 1 ? "ONEPAIR" : "HIGHCARD",
+        kickers: hand.map((card) => card.toNumber()).sort((a, b) => b - a),
+      };
+    }
+
     const allCards = [...hand, ...community];
     let bestHand = {
       rank: HandRank.HIGH_CARD,

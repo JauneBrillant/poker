@@ -8,7 +8,7 @@ export interface GameState {
   currentRound: Round;
   mainPot: number;
   sidePot: number;
-  currentBet: number;
+  maxBetThisRound: number;
   currentPlayerIndex: number;
   hasBetOccurred: boolean;
 }

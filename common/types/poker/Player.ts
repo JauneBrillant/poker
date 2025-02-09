@@ -7,8 +7,10 @@ export interface Player {
   hand: Hand;
   position: TablePosition;
   chips: number;
-  currentBet: number;
+  currentRoundBet: number;
+  isBtn: boolean;
   isTurn: boolean;
+  isActionTakenThisRound: boolean;
   isActive: boolean;
   availableActions: PlayerAction[];
 }

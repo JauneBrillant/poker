@@ -24,18 +24,16 @@ export const LobbyScreen: React.FC = () => {
   const [players, setPlayers] = useState<string[]>([]);
 
   useEffect(() => {
-    const handleLobbyUpdate = ({ updatedPlayers }: LobbyUpdateEventPayload) => {
-      setPlayers(updatedPlayers);
-    };
-
     socket?.on(SocketEvent.GAME_STARTED, ({ initialGameState }: GameStartedEventPayload) => {
       navigation.navigate("Game", { lobbyId, initialGameState });
     });
-    socket?.on(SocketEvent.LOBBY_UPDATE, handleLobbyUpdate);
+    socket?.on(SocketEvent.LOBBY_UPDATE, ({ updatedPlayers }: LobbyUpdateEventPayload) => {
+      setPlayers(updatedPlayers);
+    });
 
     return () => {
-      socket?.off(SocketEvent.LOBBY_UPDATE, handleLobbyUpdate);
-      // socket?.off(SocketEvent.GAME_STARTED);
+      socket?.off(SocketEvent.LOBBY_UPDATE);
+      socket?.off(SocketEvent.GAME_STARTED);
     };
   }, [socket, navigation, lobbyId]);
 

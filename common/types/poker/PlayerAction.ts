@@ -5,5 +5,4 @@ export enum PlayerAction {
   BET = "bet",
   RAISE = "raise",
   ALL_IN = "all-in",
-  RE_RAISE = "re-raise",
 }

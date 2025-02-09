@@ -1,8 +1,10 @@
 export enum Color {
   green = "#2CBD9C",
   offGreen = "#D1F8EF",
+  pinkk = "#ff8da1",
   pink = "#FFEDFA",
-  grey = "#9AA6B2",
+  pinkGray = "#E7DADA",
+  gray = "#DADADA",
   offWhite = "#FFFFF4",
   active = "",
   notActive = "",
