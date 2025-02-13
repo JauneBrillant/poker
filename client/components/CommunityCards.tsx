@@ -30,7 +30,7 @@ export const CommunityCards: React.FC<Props> = ({ communityCards }) => {
         Animated.timing(cardPositions[index], {
           toValue: {
             x: (index - 2) * step - CARD_WIDTH / 2,
-            y: screenHeight / 2 - CARD_HEIGHT / 2,
+            y: screenHeight / 2 - CARD_HEIGHT / 2 + 50,
           },
           duration: 1000 + index * 300,
           easing: Easing.out(Easing.ease),
@@ -42,6 +42,7 @@ export const CommunityCards: React.FC<Props> = ({ communityCards }) => {
 
   return (
     <View position="absolute">
+      {/* COMMUNITY-CARDS */}
       {communityCards.map((card, index) => (
         <Animated.View
           key={card.suit + card.rank}

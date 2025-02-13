@@ -1,5 +1,5 @@
 import { type GameState, SocketEvent } from "@common/types";
-import { ActionButtons, CommunityCards, GameHeader, MyPokerInfo } from "@components";
+import { ActionButtons, CommunityCards, GameHeader, MyPokerInfo, Pod } from "@components";
 import { useSocket } from "@contexts/SocketContext";
 import { useUsername } from "@hooks/useUsername";
 import { useRoute } from "@react-navigation/native";
@@ -47,6 +47,7 @@ export const GameScreen: React.FC = () => {
         </YStack>
       )}
       <GameHeader gameState={gameState} />
+      <Pod podAmount={gameState.mainPot} />
       <CommunityCards communityCards={gameState.communityCards} />
       <XStack width="100%" justifyContent="space-between">
         <MyPokerInfo gameState={gameState} />
