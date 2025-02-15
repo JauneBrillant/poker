@@ -25,7 +25,11 @@ export default function App() {
           <TamaguiProvider config={config}>
             <Stack.Navigator initialRouteName={useUsername() ? "Home" : "Username"}>
               <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-              <Stack.Screen name="Username" component={UsernameScreen} options={{ headerShown: false }} />
+              <Stack.Screen
+                name="Username"
+                component={UsernameScreen}
+                options={{ headerShown: false }}
+              />
               <Stack.Screen name="Lobby" component={LobbyScreen} options={{ headerShown: false }} />
               <Stack.Screen name="Game" component={GameScreen} options={{ headerShown: false }} />
             </Stack.Navigator>

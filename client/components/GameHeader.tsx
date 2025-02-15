@@ -28,10 +28,18 @@ export const GameHeader: React.FC<GameHeaderProp> = ({ gameState }) => {
 
   return (
     <XStack top="$8" width="94%" alignItems="center" justifyContent="space-between">
-      <Button unstyled icon={SquareChevronLeft} size={70} justifyContent="center" onPress={handleClickArrowBtn} />
+      <Button
+        unstyled
+        icon={SquareChevronLeft}
+        size={70}
+        justifyContent="center"
+        onPress={handleClickArrowBtn}
+      />
       <YStack>
         <Text fontFamily={Fonts.proxima}>Round : {gameState.currentRound}</Text>
-        <Text fontFamily={Fonts.proxima}>Player : {gameState.players[gameState.currentPlayerIndex].name} </Text>
+        <Text fontFamily={Fonts.proxima}>
+          Player : {gameState.players[gameState.currentPlayerIndex].name}{" "}
+        </Text>
       </YStack>
     </XStack>
   );

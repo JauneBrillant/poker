@@ -12,7 +12,7 @@
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
-    "lineWidth": 300
+    "lineWidth": 100
   },
   "organizeImports": {
     "enabled": true

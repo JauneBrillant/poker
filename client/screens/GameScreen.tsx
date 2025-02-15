@@ -4,6 +4,7 @@ import { useSocket } from "@contexts/SocketContext";
 import { useUsername } from "@hooks/useUsername";
 import { useRoute } from "@react-navigation/native";
 import type { RouteProp } from "@react-navigation/native";
+import { Opponents } from "components/Opponents";
 import { useEffect, useRef, useState } from "react";
 import { Text, XStack, YStack } from "tamagui";
 import type { RootStackParamList } from "types/RootStackParamList";
@@ -40,19 +41,28 @@ export const GameScreen: React.FC = () => {
   }, [socket]);
 
   return (
-    <YStack flex={1} justifyContent="space-between" alignItems="center" backgroundColor={Color.offWhite}>
+    <YStack
+      flex={1}
+      justifyContent="space-between"
+      alignItems="center"
+      backgroundColor={Color.offWhite}
+    >
       {winnerName && (
-        <YStack position="absolute" top="50%" left="50%" transform={[{ translateX: -50 }, { translateY: -50 }]} backgroundColor={Color.green}>
+        <YStack
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform={[{ translateX: -50 }, { translateY: -50 }]}
+          backgroundColor={Color.green}
+        >
           <Text>🏆 {winnerName} Wins! 🏆 </Text>
         </YStack>
       )}
       <GameHeader gameState={gameState} />
+      <Opponents players={gameState.players} />
       <Pod podAmount={gameState.mainPot} />
       <CommunityCards communityCards={gameState.communityCards} />
-      <XStack width="100%" justifyContent="space-between">
-        <MyPokerInfo gameState={gameState} />
-        <ActionButtons gameState={gameState} lobbyId={lobbyId} />
-      </XStack>
+      <MyPokerInfo gameState={gameState} lobbyId={lobbyId} />
     </YStack>
   );
 };

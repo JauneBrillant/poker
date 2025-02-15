@@ -66,7 +66,13 @@ export const LobbyScreen: React.FC = () => {
   return (
     <YStack flex={1} alignItems="center" backgroundColor={Color.offWhite}>
       <XStack width="90%" justifyContent="space-between">
-        <Button unstyled icon={SquareChevronLeft} size={70} top="$11" onPress={handleClickArrowBtn} />
+        <Button
+          unstyled
+          icon={SquareChevronLeft}
+          size={70}
+          top="$11"
+          onPress={handleClickArrowBtn}
+        />
         <Button
           unstyled
           icon={AlignJustify}
@@ -76,7 +82,12 @@ export const LobbyScreen: React.FC = () => {
         />
       </XStack>
 
-      <H2 fontSize={30} marginTop="$13" marginBottom={10} style={{ fontFamily: "Proxima Nova Lt Semibold" }}>
+      <H2
+        fontSize={30}
+        marginTop="$13"
+        marginBottom={10}
+        style={{ fontFamily: "Proxima Nova Lt Semibold" }}
+      >
         {lobbyId}'s Lobby
       </H2>
 
@@ -86,7 +97,9 @@ export const LobbyScreen: React.FC = () => {
             <YGroup.Item key={player}>
               <ListItem gap="$10" borderRadius={10} backgroundColor={Color.offGreen}>
                 <XStack>
-                  <Button.Icon>{player === lobbyId ? <Crown marginRight={10} /> : <Dot marginRight={10} />}</Button.Icon>
+                  <Button.Icon>
+                    {player === lobbyId ? <Crown marginRight={10} /> : <Dot marginRight={10} />}
+                  </Button.Icon>
                   <Text fontFamily={"Proxima Nova Lt Semibold"}>{player}</Text>
                 </XStack>
               </ListItem>
@@ -94,7 +107,13 @@ export const LobbyScreen: React.FC = () => {
           ))}
         </YGroup>
 
-        <Button iconAfter={<SquarePlay size="50" />} backgroundColor={Color.pink} marginLeft="auto" bottom={-300} onPress={handleClickGameStart}>
+        <Button
+          iconAfter={<SquarePlay size="50" />}
+          backgroundColor={Color.pink}
+          marginLeft="auto"
+          bottom={-300}
+          onPress={handleClickGameStart}
+        >
           <Text fontSize="$4" fontFamily={"Proxima Nova Lt Semibold"}>
             START
           </Text>

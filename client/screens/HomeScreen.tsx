@@ -49,7 +49,14 @@ export const HomeScreen = () => {
         // onPress={handleClickSettingsBtn}
       />
 
-      <Text color={Color.green} textAlign="center" fontFamily={"x10y12pxDonguriDuel"} fontSize={70} marginTop="$20" padding="$2">
+      <Text
+        color={Color.green}
+        textAlign="center"
+        fontFamily={"x10y12pxDonguriDuel"}
+        fontSize={70}
+        marginTop="$20"
+        padding="$2"
+      >
         Texas Holdem
       </Text>
 
@@ -60,7 +67,14 @@ export const HomeScreen = () => {
           </Text>
         </Button>
         <XStack gap="$2">
-          <Input flex={1} fontSize={15} placeholder={"ファインドロビー"} backgroundColor={Color.pink} style={{ fontFamily: "x10y12pxDonguriDuel" }} onChangeText={(text) => setInputValue(text)} />
+          <Input
+            flex={1}
+            fontSize={15}
+            placeholder={"ファインドロビー"}
+            backgroundColor={Color.pink}
+            style={{ fontFamily: "x10y12pxDonguriDuel" }}
+            onChangeText={(text) => setInputValue(text)}
+          />
           <Button icon={Search} backgroundColor={Color.green} onPress={handleClickFindLobby} />
         </XStack>
       </YStack>

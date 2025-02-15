@@ -18,7 +18,9 @@ export class PokerGame extends EventEmitter {
     super();
     this.lobbyId = lobbyId;
 
-    const players: Player[] = lobbyMembers.map((playerName, index) => new Player(index, playerName, this.deck.deal(2), lobbyMembers.length));
+    const players: Player[] = lobbyMembers.map(
+      (playerName, index) => new Player(index, playerName, this.deck.deal(2), lobbyMembers.length),
+    );
 
     this.state = {
       players,
@@ -112,13 +114,16 @@ export class PokerGame extends EventEmitter {
     const betAmount = activePlayers[0].currentRoundBet;
     // TODO
     // オールインしたプレイヤーがいる時、全員のベット額が揃わなくても次のラウンドにいくことがある
-    return activePlayers.every((player) => player.currentRoundBet === betAmount && player.isActionTakenThisRound);
+    return activePlayers.every(
+      (player) => player.currentRoundBet === betAmount && player.isActionTakenThisRound,
+    );
   }
 
   private nextPlayer(): void {
     this.state.players[this.state.currentPlayerIndex].isTurn = false;
     do {
-      this.state.currentPlayerIndex = (this.state.currentPlayerIndex + 1) % this.state.players.length;
+      this.state.currentPlayerIndex =
+        (this.state.currentPlayerIndex + 1) % this.state.players.length;
     } while (!this.state.players[this.state.currentPlayerIndex].isActive);
 
     (this.state.players[this.state.currentPlayerIndex] as Player).isTurn = true;

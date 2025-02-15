@@ -36,7 +36,8 @@ export class Player implements PlayerInterface {
       this.position = index === 0 ? TablePosition.SB : TablePosition.BB;
       this.isTurn = index === 0;
     } else if (playersLen === 3) {
-      this.position = index === 0 ? TablePosition.SB : index === 1 ? TablePosition.BB : TablePosition.UTG;
+      this.position =
+        index === 0 ? TablePosition.SB : index === 1 ? TablePosition.BB : TablePosition.UTG;
       this.isTurn = index === 2;
     } else {
       this.position = TablePositionArray[index];
@@ -80,7 +81,9 @@ export class Player implements PlayerInterface {
     }
 
     if (this.availableActions.includes(PlayerAction.CHECK)) {
-      this.availableActions = this.availableActions.filter((action) => action !== PlayerAction.FOLD);
+      this.availableActions = this.availableActions.filter(
+        (action) => action !== PlayerAction.FOLD,
+      );
     }
   }
 

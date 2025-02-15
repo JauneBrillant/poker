@@ -36,7 +36,11 @@ export class PokerHandEvaluator {
     const combinations = this.combinations<Card>(allCards, 5);
     for (const combo of combinations) {
       const currHand = this.evaluateFiveCardHand(combo);
-      if (currHand.rank > bestHand.rank || (currHand.rank === bestHand.rank && this.compareHighCards(currHand.kickers, bestHand.kickers) > 0)) {
+      if (
+        currHand.rank > bestHand.rank ||
+        (currHand.rank === bestHand.rank &&
+          this.compareHighCards(currHand.kickers, bestHand.kickers) > 0)
+      ) {
         bestHand = currHand;
       }
     }
