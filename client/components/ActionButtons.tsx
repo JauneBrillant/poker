@@ -20,15 +20,16 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ lobbyId, gameState
   const player = gameState.players.find((p) => p.name === username);
   const [betAmount, setBetAmount] = useState<number>(0);
   const [raiseAmount, setRaiseAmount] = useState<number>(0);
-  const [showActions, setShowActions] = useState<boolean>(false);
   const raiseOptions = [4, 3, 2];
   const betOptions = [1, 2, 3, 4];
 
-  useEffect(() => {
-    setShowActions(player?.isTurn ?? false);
-  }, [player?.isTurn]);
-
   const handleActions = (action: PlayerAction) => {
+    if (
+      (action === PlayerAction.BET && betAmount === 0) ||
+      (action === PlayerAction.RAISE && raiseAmount === 0)
+    )
+      return;
+
     const payload: ActionEventPayload = {
       lobbyId,
       action,
@@ -36,6 +37,16 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ lobbyId, gameState
       raiseAmount,
     };
     socket?.emit(SocketEvent.PLAYER_ACTION, payload);
+  };
+
+  const handlePressBetAmount = (amount: number) => {
+    setBetAmount(Math.floor(gameState.mainPot / amount));
+  };
+
+  const handlePressRaiseAmount = (amount: number) => {
+    if (player) {
+      setRaiseAmount(gameState.maxBetThisRound * amount - player.currentRoundBet);
+    }
   };
 
   return (
@@ -46,10 +57,11 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ lobbyId, gameState
           {betOptions.map((value) => (
             <TouchableOpacity
               key={value}
-              onPress={() => setBetAmount(value)}
+              onPress={() => handlePressBetAmount(value)}
               style={{
                 alignItems: "center",
-                backgroundColor: betAmount === value ? Color.pinkk : Color.gray,
+                backgroundColor:
+                  betAmount === Math.floor(gameState.mainPot / value) ? Color.pinkk : Color.gray,
                 paddingVertical: 12,
                 paddingHorizontal: 20,
                 borderRadius: 10,
@@ -69,10 +81,13 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ lobbyId, gameState
           {raiseOptions.map((value) => (
             <TouchableOpacity
               key={value}
-              onPress={() => setRaiseAmount(value)}
+              onPress={() => handlePressRaiseAmount(value)}
               style={{
                 alignItems: "center",
-                backgroundColor: raiseAmount === value ? Color.green : Color.gray,
+                backgroundColor:
+                  raiseAmount === gameState.maxBetThisRound * value - player.currentRoundBet
+                    ? Color.pinkk
+                    : Color.gray,
                 paddingVertical: 12,
                 paddingHorizontal: 20,
                 borderRadius: 10,

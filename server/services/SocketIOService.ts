@@ -17,7 +17,6 @@ export class SocketIOService {
       console.log("user connected");
 
       socket.on(SocketEvent.GAME_WINNER, (lobbyId: string, winnerName: string) => {
-        console.log("Aaaaaaa");
         this.io.to(lobbyId).emit(SocketEvent.GAME_WINNER, { lobbyId, winnerName });
       });
 
@@ -31,13 +30,16 @@ export class SocketIOService {
       socket.on(SocketEvent.GAME_START, ({ lobbyId, players }: GameStartEventPayload) => {
         const pokerGame = new PokerGame(players, lobbyId);
         this.games.set(lobbyId, pokerGame);
+        this.io.to(lobbyId).emit(SocketEvent.GAME_STARTED, {
+          initialGameState: pokerGame.state,
+        });
 
         pokerGame.on(SocketEvent.GAME_WINNER, (winnerName, lobbyId) => {
           this.io.to(lobbyId).emit(SocketEvent.GAME_WINNER, winnerName);
         });
 
-        this.io.to(lobbyId).emit(SocketEvent.GAME_STARTED, {
-          initialGameState: pokerGame.state,
+        pokerGame.on(SocketEvent.GAME_RESTARTED, (gameState, lobbyId) => {
+          this.io.to(lobbyId).emit(SocketEvent.GAME_STATE_UPDATE, gameState);
         });
       });
 

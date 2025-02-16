@@ -16,24 +16,6 @@ export const MyPokerInfo: React.FC<props> = ({ gameState, lobbyId }) => {
   const myName = useUsername();
   const player = gameState.players.find((p) => p.name === myName);
 
-  // <View
-  //   position="absolute"
-  //   bottom={-40}
-  //   left="50%"
-  //   style={{ transform: [{ translateX: -15 }] }}
-  // >
-  //   <Circle
-  //     size={30}
-  //     backgroundColor={Color.offGreen}
-  //     justifyContent="center"
-  //     alignItems="center"
-  //   >
-  //     <Text fontWeight="bold" fontSize={12}>
-  //       {p.currentRoundBet}
-  //     </Text>
-  //   </Circle>
-  // </View>
-
   return (
     <View>
       <XStack width="100%" justifyContent="center" marginBottom={10}>

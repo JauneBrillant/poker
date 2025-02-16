@@ -1,4 +1,5 @@
-// kickers: 同役の比較に必要なカード
+// kickers : 同役の比較に必要なカード
+// -----------------------------
 // royal-flush      -  [ ] 同役になることがない
 // straight-flush   -  [ストレートの最も大きい数字]
 // four-of-a-kind   -  [フォーカードの数字, キッカー]
@@ -13,19 +14,34 @@
 import type { Hand } from "@common/types";
 import { HandRank } from "@common/types";
 import type { Card } from "@models/Card";
+import type { Player } from "@models/Player";
 
 export class PokerHandEvaluator {
-  public evaluate(hand: Card[], isPreFlop: boolean, community?: Card[]): Hand {
-    if (isPreFlop) {
-      const ranks = new Set(hand.map((card) => card.rank));
-      return {
-        cards: hand,
-        rank: ranks.size === 1 ? HandRank.ONE_PAIR : HandRank.HIGH_CARD,
-        strRank: ranks.size === 1 ? "ONEPAIR" : "HIGHCARD",
-        kickers: hand.map((card) => card.toNumber()).sort((a, b) => b - a),
-      };
+  public getWinner(players: Player[]): Player {
+    let winner = players[0];
+    for (const player of players) {
+      if (
+        winner.hand.rank < player.hand.rank ||
+        (winner.hand.rank === player.hand.rank &&
+          this.compareKickers(winner.hand.kickers, player.hand.kickers) > 0)
+      ) {
+        winner = player;
+      }
     }
+    return winner;
+  }
 
+  public evaluate(hand: Card[]): Hand {
+    const ranks = new Set(hand.map((card) => card.rank));
+    return {
+      cards: hand,
+      rank: ranks.size === 1 ? HandRank.ONE_PAIR : HandRank.HIGH_CARD,
+      strRank: ranks.size === 1 ? "ワンペア" : "ハイカード",
+      kickers: hand.map((card) => card.toNumber()).sort((a, b) => b - a),
+    };
+  }
+
+  public evaluateWithCommunityCard(hand: Card[], community: Card[]): Hand {
     const allCards = [...hand, ...community];
     let bestHand = {
       rank: HandRank.HIGH_CARD,
@@ -39,7 +55,7 @@ export class PokerHandEvaluator {
       if (
         currHand.rank > bestHand.rank ||
         (currHand.rank === bestHand.rank &&
-          this.compareHighCards(currHand.kickers, bestHand.kickers) > 0)
+          this.compareKickers(currHand.kickers, bestHand.kickers) > 0)
       ) {
         bestHand = currHand;
       }
@@ -48,7 +64,7 @@ export class PokerHandEvaluator {
     return { cards: hand, ...bestHand };
   }
 
-  private compareHighCards(a: number[], b: number[]): number {
+  private compareKickers(a: number[], b: number[]): number {
     for (let i = 0; i < Math.min(a.length, b.length); i++) {
       if (a[i] > b[i]) return 1;
       if (a[i] < b[i]) return -1;

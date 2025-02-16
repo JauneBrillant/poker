@@ -11,7 +11,6 @@ import type { RootStackParamList } from "types/RootStackParamList";
 import { Color } from "../theme/Color";
 
 export const GameScreen: React.FC = () => {
-  const username = useUsername();
   const socket = useSocket();
   const route = useRoute<RouteProp<RootStackParamList, "Game">>();
   const { lobbyId, initialGameState } = route.params;
@@ -20,7 +19,6 @@ export const GameScreen: React.FC = () => {
 
   useEffect(() => {
     socket?.on(SocketEvent.GAME_WINNER, (winnerName: string) => {
-      console.log(winnerName);
       setWinnerName(winnerName);
       setTimeout(() => setWinnerName(""), 3000);
     });
@@ -31,12 +29,17 @@ export const GameScreen: React.FC = () => {
   }, [socket]);
 
   useEffect(() => {
-    socket?.on(SocketEvent.GAME_STATE_UPDATE, (updatedGameState: GameState) => {
-      setGameState(updatedGameState);
-    });
+    if (!socket) return;
+
+    const onGameStateUpdate = (updateGameState: GameState) => {
+      setGameState(updateGameState);
+    };
+
+    socket.off(SocketEvent.GAME_STATE_UPDATE, onGameStateUpdate);
+    socket.on(SocketEvent.GAME_STATE_UPDATE, onGameStateUpdate);
 
     return () => {
-      socket?.off(SocketEvent.GAME_STATE_UPDATE);
+      socket.off(SocketEvent.GAME_STATE_UPDATE, onGameStateUpdate);
     };
   }, [socket]);
 

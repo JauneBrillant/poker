@@ -20,7 +20,7 @@ export class Player implements PlayerInterface {
 
   constructor(index: number, name: string, cards: Card[], playersLen: number) {
     this.name = name;
-    this.hand = this.evaluator.evaluate(cards, true, undefined);
+    this.hand = this.evaluator.evaluate(cards);
     this.chips = 1000;
     this.currentRoundBet = 0;
     this.isBtn = index === 0;
@@ -31,7 +31,7 @@ export class Player implements PlayerInterface {
     this.assignPositionAndTurn(index, playersLen);
   }
 
-  private assignPositionAndTurn(index: number, playersLen: number): void {
+  public assignPositionAndTurn(index: number, playersLen: number): void {
     if (playersLen === 2) {
       this.position = index === 0 ? TablePosition.SB : TablePosition.BB;
       this.isTurn = index === 0;
@@ -65,7 +65,11 @@ export class Player implements PlayerInterface {
 
     if (gameState.currentRound === Round.PRE_FLOP) {
       const opponents = gameState.players.filter((p) => p.name !== this.name);
-      if (opponents.every((p) => p.isActionTakenThisRound) && !this.isActionTakenThisRound) {
+      if (
+        opponents.every((p) => p.isActionTakenThisRound) &&
+        !this.isActionTakenThisRound &&
+        gameState.maxBetThisRound === 20
+      ) {
         this.availableActions.push(PlayerAction.CHECK);
       }
     }
@@ -87,7 +91,14 @@ export class Player implements PlayerInterface {
     }
   }
 
-  public updateHandInfo(communityCards: Card[]): void {
-    this.hand = this.evaluator.evaluate(this.hand.cards as Card[], false, communityCards);
+  public reset(): void {
+    this.hand = null;
+    this.currentRoundBet = 0;
+    this.isActionTakenThisRound = false;
+    this.isTurn = false;
+    this.isActive = true;
+    this.isBtn = false;
+    this.position = null;
+    this.availableActions = [];
   }
 }
