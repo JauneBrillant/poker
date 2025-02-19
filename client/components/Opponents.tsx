@@ -1,6 +1,6 @@
 import type { Player } from "@common/types";
 import { useUsername } from "@hooks/useUsername";
-import { Card, Circle, H4, Paragraph, Text, View, XStack } from "tamagui";
+import { Card, Circle, Paragraph, Text, View, XStack } from "tamagui";
 import { Color } from "theme/Color";
 
 interface Props {

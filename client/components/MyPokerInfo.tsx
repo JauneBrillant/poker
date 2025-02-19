@@ -1,9 +1,8 @@
-import type { GameState, Player } from "@common/types";
+import type { GameState } from "@common/types";
 import { useUsername } from "@hooks/useUsername";
-import { useEffect, useState } from "react";
 import { Circle, Image, Text, View, XGroup, XStack, YStack } from "tamagui";
 import { Color } from "theme/Color";
-import { Fonts } from "theme/fonts";
+import { Fonts } from "theme/Fonts";
 import { getCardImagePath } from "utils/getCardImagePath";
 import { ActionButtons } from "./ActionButtons";
 

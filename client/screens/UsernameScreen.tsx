@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import type { NavigationProp } from "@react-navigation/native";
-import { Bird, Search } from "@tamagui/lucide-icons";
+import { Bird } from "@tamagui/lucide-icons";
 import { useState } from "react";
-import { Button, H5, Input, Text, View, XStack, YStack } from "tamagui";
+import { Button, Input, Text, XStack, YStack } from "tamagui";
 import { Color } from "theme/Color";
 import type { RootStackParamList } from "types/RootStackParamList";
 
@@ -44,7 +44,7 @@ export const UsernameScreen = () => {
             fontSize={15}
             placeholder={"Username"}
             backgroundColor={Color.offGreen}
-            borderColor={Color.grey}
+            borderColor={Color.gray}
             style={{ fontFamily: "Proxima Nova Lt Semibold" }}
             onChangeText={(text) => setUsername(text)}
           />
@@ -59,7 +59,7 @@ export const UsernameScreen = () => {
           width="50%"
           marginTop="$3"
           backgroundColor={Color.pink}
-          borderColor={Color.grey}
+          borderColor={Color.gray}
         >
           <Text fontFamily="Proxima Nova Lt Semibold">Play as a Guest</Text>
         </Button>

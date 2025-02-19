@@ -4,17 +4,17 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 
 const router: Router = Router();
+const lobbyManager = new LobbyManager();
 
 router.post(
   "/create-lobby",
-  (
+  async (
     req: Request<unknown, unknown, CreateLobbyRequest>,
     res: Response<{ message: string }>,
-  ): void => {
+  ): Promise<void> => {
     try {
-      const lobby = LobbyManager.getInstance();
       const { hostname } = req.body;
-      lobby.createLobby(hostname);
+      await lobbyManager.createLobby(hostname);
       res.sendStatus(201);
     } catch (error) {
       console.error("Error in create-lobby route:", error);
@@ -30,8 +30,7 @@ router.get(
       const { lobbyId } = req.params;
       const decodedLobbyId = decodeURIComponent(lobbyId);
 
-      const lobby = LobbyManager.getInstance();
-      if (lobby.existLobby(decodedLobbyId)) {
+      if (lobbyManager.existLobby(decodedLobbyId)) {
         res.sendStatus(200);
       } else {
         res.status(404).json({ message: `Lobby: ${decodedLobbyId} does not exist` });

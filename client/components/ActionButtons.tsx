@@ -3,11 +3,11 @@ import { type GameState, PlayerAction } from "@common/types";
 import type { ActionEventPayload } from "@common/types";
 import { useSocket } from "@contexts/SocketContext";
 import { useUsername } from "@hooks/useUsername";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { ListItem, Text, View, XStack, YGroup, YStack } from "tamagui";
+import { Text, XStack, YStack } from "tamagui";
 import { Color } from "theme/Color";
-import { Fonts } from "theme/fonts";
+import { Fonts } from "theme/Fonts";
 
 interface ActionButtonsProps {
   lobbyId: string;

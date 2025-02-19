@@ -1,12 +1,11 @@
 import { type GameState, SocketEvent } from "@common/types";
-import { ActionButtons, CommunityCards, GameHeader, MyPokerInfo, Pod } from "@components";
+import { CommunityCards, GameHeader, MyPokerInfo, Pod } from "@components";
 import { useSocket } from "@contexts/SocketContext";
-import { useUsername } from "@hooks/useUsername";
 import { useRoute } from "@react-navigation/native";
 import type { RouteProp } from "@react-navigation/native";
 import { Opponents } from "components/Opponents";
-import { useEffect, useRef, useState } from "react";
-import { Text, XStack, YStack } from "tamagui";
+import { useEffect, useState } from "react";
+import { Text, YStack } from "tamagui";
 import type { RootStackParamList } from "types/RootStackParamList";
 import { Color } from "../theme/Color";
 

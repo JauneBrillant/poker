@@ -4,7 +4,7 @@ import type { NavigationProp } from "@react-navigation/native";
 import { SquareChevronLeft } from "@tamagui/lucide-icons";
 import { Alert } from "react-native";
 import { Button, Text, XStack, YStack } from "tamagui";
-import { Fonts } from "theme/fonts";
+import { Fonts } from "theme/Fonts";
 import type { RootStackParamList } from "types/RootStackParamList";
 
 interface GameHeaderProp {

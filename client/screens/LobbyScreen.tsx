@@ -1,5 +1,4 @@
 import { SocketEvent } from "@common/types";
-import type { LobbyUpdateEventPayload } from "@common/types";
 import type { GameStartedEventPayload } from "@common/types";
 import { useUsername } from "@hooks/useUsername";
 import { useNavigation } from "@react-navigation/native";
@@ -17,25 +16,30 @@ import { Color } from "../theme/Color";
 
 export const LobbyScreen: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, "Lobby">>();
-  const { lobbyId } = route.params;
+  const { lobbyName } = route.params;
   const socket = useSocket();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, "Lobby">>();
-  const username = useUsername();
+  const userName = useUsername();
   const [players, setPlayers] = useState<string[]>([]);
 
   useEffect(() => {
-    socket?.on(SocketEvent.GAME_STARTED, ({ initialGameState }: GameStartedEventPayload) => {
-      navigation.navigate("Game", { lobbyId, initialGameState });
+    socket.on(SocketEvent.GAME_STARTED, ({ initialGameState }: GameStartedEventPayload) => {
+      navigation.navigate("Game", { lobbyName, initialGameState });
     });
-    socket?.on(SocketEvent.LOBBY_UPDATE, ({ updatedPlayers }: LobbyUpdateEventPayload) => {
-      setPlayers(updatedPlayers);
+    socket.on(SocketEvent.LOBBY_UPDATE, (lobbyMembers: string[]) => {
+      setPlayers(lobbyMembers);
+    });
+    socket.on(SocketEvent.LOBBY_DELETE, () => {
+      navigation.navigate("Home");
+      Alert.alert("ロビーが削除されました。");
     });
 
     return () => {
-      socket?.off(SocketEvent.LOBBY_UPDATE);
-      socket?.off(SocketEvent.GAME_STARTED);
+      socket.off(SocketEvent.LOBBY_UPDATE);
+      socket.off(SocketEvent.GAME_STARTED);
+      socket.off(SocketEvent.LOBBY_DELETE);
     };
-  }, [socket, navigation, lobbyId]);
+  }, [socket, navigation, lobbyName]);
 
   const handleClickGameStart = () => {
     if (players.length <= 1) {
@@ -43,23 +47,24 @@ export const LobbyScreen: React.FC = () => {
       return;
     }
 
-    if (lobbyId !== username) {
+    if (lobbyName !== userName) {
       Alert.alert("ホスト以外ゲームを開始できません。");
       return;
     }
 
-    socket?.emit(SocketEvent.GAME_START, { lobbyId, players });
+    socket.emit(SocketEvent.GAME_START, { lobbyName, players });
   };
 
   const handleClickArrowBtn = () => {
-    if (__DEV__) {
-      navigation.pop();
-      return;
-    }
-
     Alert.alert("確認", "ロビーから抜けますか？", [
       { text: "キャンセル", style: "cancel" },
-      { text: "OK", onPress: () => navigation.pop() },
+      {
+        text: "OK",
+        onPress: () => {
+          socket.emit(SocketEvent.LOBBY_LEAVE, lobbyName, userName);
+          navigation.pop();
+        },
+      },
     ]);
   };
 
@@ -88,17 +93,17 @@ export const LobbyScreen: React.FC = () => {
         marginBottom={10}
         style={{ fontFamily: "Proxima Nova Lt Semibold" }}
       >
-        {lobbyId}'s Lobby
+        {lobbyName}'s Lobby
       </H2>
 
       <View width="70%" marginTop="$10">
         <YGroup gap={10}>
-          {players.map((player, index) => (
+          {players?.map((player) => (
             <YGroup.Item key={player}>
               <ListItem gap="$10" borderRadius={10} backgroundColor={Color.offGreen}>
                 <XStack>
                   <Button.Icon>
-                    {player === lobbyId ? <Crown marginRight={10} /> : <Dot marginRight={10} />}
+                    {player === lobbyName ? <Crown marginRight={10} /> : <Dot marginRight={10} />}
                   </Button.Icon>
                   <Text fontFamily={"Proxima Nova Lt Semibold"}>{player}</Text>
                 </XStack>
