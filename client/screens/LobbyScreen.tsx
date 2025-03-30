@@ -52,7 +52,7 @@ export const LobbyScreen: React.FC = () => {
       return;
     }
 
-    socket.emit(SocketEvent.GAME_START, { lobbyName, players });
+    socket.emit(SocketEvent.GAME_START, { lobbyId: lobbyName, players });
   };
 
   const handleClickArrowBtn = () => {

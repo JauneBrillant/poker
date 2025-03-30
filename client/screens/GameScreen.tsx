@@ -12,7 +12,7 @@ import { Color } from "../theme/Color";
 export const GameScreen: React.FC = () => {
   const socket = useSocket();
   const route = useRoute<RouteProp<RootStackParamList, "Game">>();
-  const { lobbyId, initialGameState } = route.params;
+  const { lobbyName, initialGameState } = route.params;
   const [gameState, setGameState] = useState<GameState>(initialGameState);
   const [winnerName, setWinnerName] = useState<string>("");
 
@@ -64,7 +64,7 @@ export const GameScreen: React.FC = () => {
       <Opponents players={gameState.players} />
       <Pod podAmount={gameState.mainPot} />
       <CommunityCards communityCards={gameState.communityCards} />
-      <MyPokerInfo gameState={gameState} lobbyId={lobbyId} />
+      <MyPokerInfo gameState={gameState} lobbyId={lobbyName} />
     </YStack>
   );
 };

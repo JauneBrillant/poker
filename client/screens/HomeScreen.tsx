@@ -19,7 +19,9 @@ export const HomeScreen = () => {
   const [lobbyName, setLobbyName] = useState<string>("");
 
   const handleClickCreateLobby = () => {
-    socket.on(SocketEvent.LOBBY_CREATE_SUCCESS, () => navigation.navigate("Lobby", { lobbyName }));
+    socket.on(SocketEvent.LOBBY_CREATE_SUCCESS, () =>
+      navigation.navigate("Lobby", { lobbyName: userName }),
+    );
     socket.on(SocketEvent.LOBBY_CREATE_FAILED, () => {
       Alert.alert("Failed to create lobby");
     });
