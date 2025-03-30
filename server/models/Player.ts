@@ -1,70 +1,104 @@
-import { PlayerAction } from "@common/types";
-import type { TablePosition } from "@common/types";
+import { PlayerAction, Round } from "@common/types";
+import { TablePosition } from "@common/types";
 import type { GameState, Hand, Player as PlayerInterface } from "@common/types";
 import { TablePositionArray } from "@common/types";
+import type { Card } from "@models/Card";
 import { PokerHandEvaluator } from "@services/PokerHandEvaluator";
-import type { Card } from "./Card";
 
 export class Player implements PlayerInterface {
-	private evaluator = new PokerHandEvaluator();
-	public name: string;
-	public hand: Hand;
-	public position: TablePosition;
-	public chips: number;
-	public currentBet: number;
-	public isActive: boolean;
-	public availableActions: PlayerAction[];
+  private evaluator = new PokerHandEvaluator();
+  public name: string;
+  public hand: Hand;
+  public position: TablePosition;
+  public chips: number;
+  public currentRoundBet: number;
+  public isBtn: boolean;
+  public isTurn: boolean;
+  public isActionTakenThisRound: boolean;
+  public isActive: boolean;
+  public availableActions: PlayerAction[];
 
-	constructor(
-		index: number,
-		name: string,
-		cards: Card[],
-		communityCards: Card[],
-	) {
-		this.name = name;
-		this.hand = this.evaluator.evaluate(cards, communityCards);
-		this.position = TablePositionArray[index];
-		this.chips = 1000;
-		this.currentBet = 0;
-		this.isActive = true;
-		this.availableActions = [];
-	}
+  constructor(index: number, name: string, cards: Card[], playersLen: number) {
+    this.name = name;
+    this.hand = this.evaluator.evaluate(cards);
+    this.chips = 1000;
+    this.currentRoundBet = 0;
+    this.isBtn = index === 0;
+    this.isActionTakenThisRound = false;
+    this.isActive = true;
+    this.availableActions = [];
 
-	public bet(amount: number): void {
-		this.chips -= amount;
-		this.currentBet += amount;
-	}
+    this.assignPositionAndTurn(index, playersLen);
+  }
 
-	public addChips(amount: number): void {
-		this.chips += amount;
-	}
+  public assignPositionAndTurn(index: number, playersLen: number): void {
+    if (playersLen === 2) {
+      this.position = index === 0 ? TablePosition.SB : TablePosition.BB;
+      this.isTurn = index === 0;
+    } else if (playersLen === 3) {
+      this.position =
+        index === 0 ? TablePosition.SB : index === 1 ? TablePosition.BB : TablePosition.UTG;
+      this.isTurn = index === 2;
+    } else {
+      this.position = TablePositionArray[index];
+      this.isTurn = index === 3;
+    }
+  }
 
-	public setAvailableActions(gameState: GameState): void {
-		const actions = [PlayerAction.FOLD];
+  public bet(amount: number): void {
+    this.chips -= amount;
+    this.currentRoundBet += amount;
+  }
 
-		// fold済み
-		if (!this.isActive) {
-			this.availableActions = [];
-		}
+  public addChips(amount: number): void {
+    this.chips += amount;
+  }
 
-		if (this.chips <= 0) {
-			this.availableActions = [PlayerAction.ALL_IN];
-		}
+  public setAvailableAction(gameState: GameState): void {
+    this.availableActions = [];
 
-		if (!gameState.hasBetOccurred) {
-			actions.push(PlayerAction.CHECK, PlayerAction.BET);
-		} else {
-			const callAmount = gameState.currentBet - this.currentBet;
-			if (this.chips >= callAmount) {
-				actions.push(PlayerAction.CALL);
-			} else {
-				actions.push(PlayerAction.ALL_IN); // コール額を満たせないとき
-			}
+    if (!this.isActive || this.chips <= 0) {
+      return;
+    }
 
-			actions.push(PlayerAction.RAISE);
-		}
+    this.availableActions.push(PlayerAction.FOLD);
 
-		this.availableActions = [];
-		this.availableActions = [...actions];
-	}
+    if (gameState.currentRound === Round.PRE_FLOP) {
+      const opponents = gameState.players.filter((p) => p.name !== this.name);
+      if (
+        opponents.every((p) => p.isActionTakenThisRound) &&
+        !this.isActionTakenThisRound &&
+        gameState.maxBetThisRound === 20
+      ) {
+        this.availableActions.push(PlayerAction.CHECK);
+      }
+    }
+
+    if (gameState.hasBetOccurred) {
+      const callAmount = gameState.maxBetThisRound - this.currentRoundBet;
+      if (this.chips >= callAmount && callAmount !== 0) {
+        this.availableActions.push(PlayerAction.CALL);
+      }
+      this.availableActions.push(PlayerAction.RAISE);
+    } else {
+      this.availableActions.push(PlayerAction.BET, PlayerAction.CHECK);
+    }
+
+    if (this.availableActions.includes(PlayerAction.CHECK)) {
+      this.availableActions = this.availableActions.filter(
+        (action) => action !== PlayerAction.FOLD,
+      );
+    }
+  }
+
+  public reset(): void {
+    this.hand = null;
+    this.currentRoundBet = 0;
+    this.isActionTakenThisRound = false;
+    this.isTurn = false;
+    this.isActive = true;
+    this.isBtn = false;
+    this.position = null;
+    this.availableActions = [];
+  }
 }

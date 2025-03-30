@@ -11,10 +11,10 @@ import lobbyRoutes from "@routes/lobbyRoutes";
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-	cors: {
-		origin: "*", // 開発時のみ。本番環境では適切なオリジンを指定
-		methods: ["GET", "POST"],
-	},
+  cors: {
+    origin: "*", // 開発時のみ。本番環境では適切なオリジンを指定
+    methods: ["GET", "POST"],
+  },
 });
 
 app.use(cors());
@@ -28,5 +28,5 @@ app.use(express.json());
 app.use("/api", lobbyRoutes);
 
 server.listen(3000, "0.0.0.0", () => {
-	console.log("the server has started on port 3000");
+  console.log("the server has started on port 3000");
 });

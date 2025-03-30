@@ -1,38 +1,56 @@
-import type { Lobby } from "@common/types";
+import Redis from "ioredis";
 
-// singleton
+const redisUrl = "redis://localhost:6379";
+const redis = new Redis(redisUrl);
+
 export class LobbyManager {
-	private static instance: LobbyManager;
-	private lobbies: Map<string, Lobby> = new Map();
+  public async createLobby(lobbyName: string): Promise<void> {
+    try {
+      await redis.hset(lobbyName, "players", JSON.stringify([lobbyName]));
+    } catch (error) {
+      const msg = "error occurred during createLobby Redis operation";
+      console.error(msg, error);
+      throw new Error(msg);
+    }
+  }
 
-	private constructor() {}
-	public static getInstance(): LobbyManager {
-		if (!LobbyManager.instance) {
-			LobbyManager.instance = new LobbyManager();
-		}
-		return LobbyManager.instance;
-	}
+  public async joinLobby(lobbyName: string, username: string): Promise<string[] | null> {
+    try {
+      const lobbyMembers = JSON.parse(await redis.hget(lobbyName, "players"));
+      if (!lobbyMembers) return null;
+      lobbyMembers.push(username);
+      await redis.hset(`lobby:${lobbyName}`, "players", JSON.stringify(lobbyMembers));
+      return lobbyMembers;
+    } catch (error) {
+      const msg = "error occurred during joinLobby Redis operation";
+      console.error(msg, error);
+      throw new Error(msg);
+    }
+  }
 
-	public createLobby(lobbyId: string): void {
-		this.lobbies.set(lobbyId, { id: lobbyId, players: [] });
-	}
+  public async leaveLobby(lobbyName: string, userName: string): Promise<string[]> {
+    try {
+      const lobbyMembers = JSON.parse(await redis.hget(lobbyName, "players"));
+      if (!lobbyMembers) return;
+      const index = lobbyMembers.indexOf(userName);
+      if (index !== -1) {
+        lobbyMembers.splice(index, 1);
+        await redis.hset(lobbyName, "players", JSON.stringify(lobbyMembers));
+      }
+      return lobbyMembers;
+    } catch (error) {
+      const msg = "error occurred during leaveLobby Redis operation";
+      console.error(msg, error);
+      throw new Error(msg);
+    }
+  }
 
-	public getLobby(lobbyId: string): Lobby {
-		return this.lobbies.get(lobbyId) ?? null;
-	}
+  public async deleteLobby(lobbyName: string): Promise<void> {
+    await redis.del("lobbyName");
+  }
 
-	public joinLobby(lobbyId: string, attendee: string): boolean {
-		const lobby = this.lobbies.get(lobbyId);
-		if (!lobby) return false;
-		lobby.players.push(attendee);
-		return true;
-	}
-
-	public existLobby(lobbyId: string): boolean {
-		return this.lobbies.has(lobbyId);
-	}
-
-	public deleteLobby(lobbyId: string): boolean {
-		return this.lobbies.delete(lobbyId);
-	}
+  public async existLobby(lobbyId: string): Promise<boolean> {
+    const data = await redis.hget(`lobby:${lobbyId}`, "players");
+    return !!data;
+  }
 }
